@@ -67,7 +67,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: |
+        run:
           aws deploy create-deployment \
           --application-name coinTalk[만든 애플리케이션 이름] \
           --deployment-group-name coin-group[만든 애플리케이션 그룹 이름] \
