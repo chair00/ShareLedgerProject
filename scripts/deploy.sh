@@ -1,31 +1,22 @@
-#!/usr/bin/env bash
+BUILD_JAR=$(ls /home/ec2-user/github-action/fis_police_server/build/libs/*.jar)
+JAR_NAME=$(basename $BUILD_JAR)
+echo "> build 파일명: $JAR_NAME" >> /home/ec2-user/github-action/deploy.log
 
-REPOSITORY=/home/ubuntu/app
+echo "> 현재 실행중인 애플리케이션 pid 확인" >> /home/ec2-user/github-action/deploy.log
+CURRENT_PID=$(pgrep -f $JAR_NAME)
 
-echo "> 현재 구동 중인 애플리케이션 pid 확인"
-
-CURRENT_PID=$(pgrep -fla java | grep hayan | awk '{print $1}')
-
-echo "현재 구동 중인 애플리케이션 pid: $CURRENT_PID"
-
-if [ -z "$CURRENT_PID" ]; then
-  echo "현재 구동 중인 애플리케이션이 없으므로 종료하지 않습니다."
+if [ -z $CURRENT_PID ]; then
+  echo "> 현재 구동중인 애플리케이션이 없으므로 종료하지 않습니다." >> /home/ec2-user/github-action/deploy.log
 else
-  echo "> kill -15 $CURRENT_PID"
+  echo "> kill -15 $CURRENT_PID" >> /home/ec2-user/github-action/deploy.log
   kill -15 $CURRENT_PID
   sleep 5
 fi
 
-echo "> 새 애플리케이션 배포"
+echo "> build 파일 복사" >> /home/ec2-user/github-action/deploy.log
+DEPLOY_PATH=/home/ec2-user/github-action/
+cp $BUILD_JAR $DEPLOY_PATH
 
-JAR_NAME=$(ls -tr $REPOSITORY/*SNAPSHOT.jar | tail -n 1)
-
-echo "> JAR NAME: $JAR_NAME"
-
-echo "> $JAR_NAME 에 실행권한 추가"
-
-chmod +x $JAR_NAME
-
-echo "> $JAR_NAME 실행"
-
-nohup java -jar -Duser.timezone=Asia/Seoul $JAR_NAME >> $REPOSITORY/nohup.out 2>&1 &
+DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
+echo "> DEPLOY_JAR 배포" >> /home/ec2-user/github-action/deploy.log
+nohup java -jar $DEPLOY_JAR >> /home/ec2-user/deploy.log 2>/home/ec2-user/github-action/deploy_err.log &
