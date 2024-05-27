@@ -18,7 +18,7 @@ fi
 
 echo "> 현재 구동 중인 8080 pid 확인"
 
-CURRENT_PID=$(netstat -tnlp | grep 8080 | awk '{print $1}')
+CURRENT_PID=$(netstat -tnlp | grep 8080 | awk '{ print $7 }'|grep -o '[0-9]*')
 
 echo "현재 구동 중인 8080 pid: $CURRENT_PID"
 
