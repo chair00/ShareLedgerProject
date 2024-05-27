@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExController {
     @GetMapping("/")
     public String helloWorld() {
-        return "update complete";
+        return "8080";
     }
 }
