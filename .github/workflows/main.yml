@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  S3_BUCKET_NAME: cointalk-deploy
+  S3_BUCKET_NAME: share-ledger-bucket
 
 jobs:
   build:
@@ -47,7 +47,7 @@ jobs:
         run: cp ./scripts/*.sh ./deploy
 
       - name: Make zip file
-        run: zip -r ./coinTalk.zip ./deploy
+        run: zip -r ./shareLedger.zip ./deploy
         shell: bash
 
       - name: Configure AWS credentials
@@ -58,7 +58,7 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./coinTalk.zip s3://$S3_BUCKET_NAME/
+        run: aws s3 cp --region ap-northeast-2 ./shareLedger.zip s3://$S3_BUCKET_NAME/
 
 
 
@@ -69,8 +69,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run:
           aws deploy create-deployment
-          --application-name coinTalk
-          --deployment-group-name coin-group
+          --application-name shareLedger
+          --deployment-group-name share-ledger-group
           --file-exists-behavior OVERWRITE
-          --s3-location bucket=cointalk-deploy,bundleType=zip,key=coinTalk.zip
+          --s3-location bucket=share-ledger-deploy,bundleType=zip,key=shareLedger.zip
           --region ap-northeast-2
