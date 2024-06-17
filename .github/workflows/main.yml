@@ -72,5 +72,5 @@ jobs:
           --application-name shareLedger
           --deployment-group-name share-ledger-group
           --file-exists-behavior OVERWRITE
-          --s3-location bucket=share-ledger-deploy,bundleType=zip,key=shareLedger.zip
+          --s3-location bucket=share-ledger-bucket,bundleType=zip,key=shareLedger.zip
           --region ap-northeast-2
