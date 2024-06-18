@@ -20,27 +20,28 @@ public class LedgerService {
 
     }
 
-//    // 가계부 정보 조회
-//    public LedgerDto getLedger(Long ledgerId) {
-//
-//        LedgerEntity ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다."));
-//
-//        return LedgerDto.builder().ledgerName(ledger.getLedgerName()).build();
-//
-//    }
-//
-//    // 가계부 정보 수정
-//    @Transactional
-//    public LedgerDto updateLedger(Long ledgerId, LedgerDto ledgerDto) {
-//        LedgerEntity ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다."));
-//        ledger.setLedgerName(ledgerDto.getLedgerName());
-//
-//        return ledger
-//    }
-//
-//    // 가계부 삭제
-//    public void deleteLedger(Long ledgerId) {
-//
-//    }
+    // 가계부 정보 조회
+    public LedgerDto getLedger(Long ledgerId) {
+
+        LedgerEntity ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다."));
+
+        return new LedgerDto(ledger);
+
+    }
+
+    // 가계부 정보 수정
+    @Transactional
+    public LedgerDto updateLedger(Long ledgerId, LedgerDto ledgerDto) {
+        LedgerEntity ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다."));
+        ledger.setLedgerName(ledgerDto.getLedgerName());
+
+        return new LedgerDto(ledger);
+    }
+
+    // 가계부 삭제
+    public void deleteLedger(Long ledgerId) {
+        LedgerEntity ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다."));
+        ledgerRepository.delete(ledger);
+    }
 
 }

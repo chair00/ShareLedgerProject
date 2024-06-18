@@ -9,10 +9,15 @@ import lombok.*;
 
 @Getter
 @Setter
-@Builder
+@NoArgsConstructor
 public class LedgerDto {
 
     private String ledgerName;
+
+    @Builder
+    public LedgerDto(LedgerEntity ledgerEntity) {
+        this.ledgerName = ledgerEntity.getLedgerName();
+    }
 
     @Builder
     public LedgerEntity toEntity() {

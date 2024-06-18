@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.CategoryDto;
 import com.example.demo.dto.LedgerDto;
+import com.example.demo.entity.LedgerEntity;
 import com.example.demo.service.LedgerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class LedgerController {
     // 가계부 정보 수정
     @PutMapping("/{ledgerId}")
     public ResponseEntity<LedgerDto> updateLedger(@PathVariable Long ledgerId, @RequestBody LedgerDto ledgerDto){
-        LedgerDto updatedledger = ledgerService.updateLedger(ledgerId, ledgerDto);
+        LedgerDto updatedLedger = ledgerService.updateLedger(ledgerId, ledgerDto);
         return ResponseEntity.ok(updatedLedger);
     }
 
