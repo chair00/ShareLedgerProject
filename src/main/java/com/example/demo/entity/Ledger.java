@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LedgerEntity {
+public class Ledger {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +16,7 @@ public class LedgerEntity {
     private String ledgerName;
 
     @Builder
-    public LedgerEntity(String ledgerName) {
+    public Ledger(String ledgerName) {
         this.ledgerName = ledgerName;
     }
 }

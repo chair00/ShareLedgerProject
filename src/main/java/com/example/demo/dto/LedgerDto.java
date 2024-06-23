@@ -1,10 +1,6 @@
 package com.example.demo.dto;
 
-import com.example.demo.entity.LedgerEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.demo.entity.Ledger;
 import lombok.*;
 
 @Getter
@@ -15,13 +11,13 @@ public class LedgerDto {
     private String ledgerName;
 
     @Builder
-    public LedgerDto(LedgerEntity ledgerEntity) {
-        this.ledgerName = ledgerEntity.getLedgerName();
+    public LedgerDto(Ledger ledger) {
+        this.ledgerName = ledger.getLedgerName();
     }
 
     @Builder
-    public LedgerEntity toEntity() {
-        return LedgerEntity.builder()
+    public Ledger toEntity() {
+        return Ledger.builder()
                 .ledgerName(ledgerName)
                 .build();
     }
