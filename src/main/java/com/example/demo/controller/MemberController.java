@@ -45,7 +45,7 @@ public class MemberController {
     public ResponseEntity<?> showLedgerList() {return ResponseEntity.ok().body("가계부 목록 조회");}
 
     // 프로필 등록
-    @GetMapping("/member/profile")
+    @PostMapping("/member/profile")
     public ResponseEntity<?> createProfile() {return ResponseEntity.ok().body("프로필 등록");}
 
     // 프로필 조회
@@ -53,7 +53,7 @@ public class MemberController {
     public ResponseEntity<?> showProfile() {return ResponseEntity.ok().body("프로필 조회");}
 
     // 프로필 수정
-    @GetMapping("/member/profile")
+    @PutMapping("/member/profile")
     public ResponseEntity<?> updateProfile() {return ResponseEntity.ok().body("프로필 수정");}
 
 }
