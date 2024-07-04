@@ -1,10 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.LedgerDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@RestController
+@RequestMapping("")
+@RequiredArgsConstructor
 public class MemberController {
     // 회원가입
     @PostMapping("/signin")
