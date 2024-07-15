@@ -47,7 +47,9 @@ public class CategoryService {
     }
 
     // 목록 가져오기
-    // 하위 카테고리 불러오기
+    public List<CategoryDto> findAll(Long ledgerId) {
+        return categoryRepository.findAll().stream().map(CategoryDto::new).toList();
+    }
 
     @Transactional
     public Long update(Long categoryId, CategoryDto categoryDto) {

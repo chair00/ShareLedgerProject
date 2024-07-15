@@ -24,12 +24,12 @@ public class CategoryController {
         return ResponseEntity.ok(createCategoryId);
     }
 
-//    // 카테고리 상세 조회
-//    @GetMapping("/{ledgerId}/category/{categoryId}")
-//    public ResponseEntity<CategoryDto> getCategory(@PathVariable Long categoryId){
-//        CategoryDto category = categoryService.find(categoryId);
-//        return ResponseEntity.ok(category);
-//    }
+    // 카테고리 상세 조회
+    @GetMapping("/{ledgerId}/category/{categoryId}")
+    public ResponseEntity<CategoryDto> getCategory(@PathVariable Long categoryId){
+        CategoryDto category = categoryService.find(categoryId);
+        return ResponseEntity.ok(category);
+    }
 
 //    // 카테고리 목록 조회
 //    @GetMapping("/{ledgerId}/category")
