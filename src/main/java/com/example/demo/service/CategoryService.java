@@ -26,30 +26,38 @@ public class CategoryService {
 
         category.setLedger(ledger);
 
-        if (categoryDto.getParentCategoryName() == null){
-            if (categoryRepository.existsByName(categoryDto.getParentCategoryName())){
-                throw new IllegalArgumentException("이미 존재하는 이름입니다.");
-            }
-            category.setParent(null);
-            category.setLevel(0);
-        } else {
-            Category parentCategory = categoryRepository.findByName(categoryDto.getParentCategoryName()).orElseThrow(() -> new IllegalArgumentException("상위 카테고리 이름이 존재하지 않습니다"));
-            category.setParent(parentCategory);
-            category.setLevel(1);
+        return categoryRepository.save(category).getId();
+    }
+
+    // 서브 카테고리 추가
+    public Long save(Long ledgerId, Long categoryId, CategoryDto categoryDto) {
+        Ledger ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다"));
+        Category category = categoryDto.toEntity();
+
+        Category parentCategory = categoryRepository.findById(categoryId).orElseThrow(() -> new IllegalArgumentException("카테고리 id가 존재하지 않습니다"));
+        if (parentCategory.getParent() != null){
+            throw new IllegalArgumentException("카테고리는 2계층을 넘을 수 없습니다.");
         }
+
+        category.setLedger(ledger);
+        category.setParent(parentCategory);
 
         return categoryRepository.save(category).getId();
     }
 
     public CategoryDto find(Long categoryId) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new IllegalArgumentException("카테고리 id가 존재하지 않습니다."));
-        return CategoryDto.builder().name(category.getName()).type(category.getType()).build();
+
+        // 부모 카테고리가 없는 경우를 처리
+        String parentName = (category.getParent() != null) ? category.getParent().getName() : null;
+
+        return CategoryDto.builder().name(category.getName()).type(category.getType()).parentName(parentName).build();
     }
 
-    // 목록 가져오기
-    public List<CategoryDto> findAll(Long ledgerId) {
-        return categoryRepository.findAll().stream().map(CategoryDto::new).toList();
-    }
+//    // 목록 가져오기
+//    public List<CategoryDto> findAll(Long ledgerId) {
+//        return categoryRepository.findAll().stream().map(CategoryDto::new).toList();
+//    }
 
     @Transactional
     public Long update(Long categoryId, CategoryDto categoryDto) {

@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 import com.example.demo.entity.Category;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,38 +13,29 @@ import java.util.stream.Collectors;
 @Getter
 @AllArgsConstructor
 public class CategoryDto {
-    private Long categoryId;
-
+    @NotBlank(message = "카테고리 이름을 입력해야합니다.")
     private String name;
 
+    @NotBlank(message = "카테고리 타입을 선택해야합니다.")
     private String type;
 
-    private String parentCategoryName;
-
-    private Integer level;
+    private String parentName;
 
     private Map<String, CategoryDto> children;
 
-    public CategoryDto(Category entity) {
-        this.categoryId = entity.getId();
-        this.name = entity.getName();
-        this.type = entity.getType();
-        if(entity.getParent() == null) {
-            this.parentCategoryName = "대분류";
-        } else {
-            this.parentCategoryName = entity.getParent().getName();
-        }
-
-        this.children = entity.getChild() == null ? null :
-                entity.getChild().stream().collect(
-                        Collectors.toMap(Category::getName, CategoryDto::new));
-    }
+//    public CategoryDto(Category entity) {
+//        this.name = entity.getName();
+//        this.type = entity.getType();
+//
+//        this.children = entity.getChild() == null ? null :
+//                entity.getChild().stream().collect(
+//                        Collectors.toMap(Category::getName, CategoryDto::new));
+//    }
 
     public Category toEntity() {
         return Category.builder()
                 .name(name)
                 .type(type)
-                .level(level)
                 .build();
     }
 }

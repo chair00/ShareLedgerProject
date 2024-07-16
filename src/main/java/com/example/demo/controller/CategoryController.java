@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.CategoryDto;
 import com.example.demo.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,15 @@ public class CategoryController {
 
     // 카테고리 추가
     @PostMapping("/{ledgerId}/category")
-    public ResponseEntity<Long> createCategory(@PathVariable Long ledgerId, @RequestBody CategoryDto categoryDto){
+    public ResponseEntity<Long> createCategory(@PathVariable Long ledgerId, @Valid @RequestBody CategoryDto categoryDto){
         Long createCategoryId = categoryService.save(ledgerId, categoryDto);
+        return ResponseEntity.ok(createCategoryId);
+    }
+
+    // 서브 카테고리 추가
+    @PostMapping("/{ledgerId}/category/{categoryId}")
+    public ResponseEntity<Long> createCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @Valid @RequestBody CategoryDto categoryDto){
+        Long createCategoryId = categoryService.save(ledgerId, categoryId, categoryDto);
         return ResponseEntity.ok(createCategoryId);
     }
 

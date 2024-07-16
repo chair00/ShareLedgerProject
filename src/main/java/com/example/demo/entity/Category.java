@@ -1,11 +1,7 @@
 package com.example.demo.entity;
 
-import com.example.demo.dto.CategoryDto;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,17 +27,14 @@ public class Category {
     @JoinColumn(name = "parentCategoryId")
     private Category parent;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> child = new ArrayList<>();
 
-    private Integer level;
-
     @Builder
-    public Category(String name, String type, Ledger ledger, Category parent, Integer level) {
+    public Category(String name, String type, Ledger ledger, Category parent) {
         this.name = name;
         this.type = type;
         this.ledger = ledger;
         this.parent = parent;
-        this.level = level;
     }
 }
