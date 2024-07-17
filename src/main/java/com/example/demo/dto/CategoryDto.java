@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -21,16 +22,16 @@ public class CategoryDto {
 
     private String parentName;
 
-    private Map<String, CategoryDto> children;
+    private List<CategoryDto> children;
 
-//    public CategoryDto(Category entity) {
-//        this.name = entity.getName();
-//        this.type = entity.getType();
+    public CategoryDto(Category entity) {
+        this.name = entity.getName();
+        this.type = entity.getType();
 //
 //        this.children = entity.getChild() == null ? null :
 //                entity.getChild().stream().collect(
 //                        Collectors.toMap(Category::getName, CategoryDto::new));
-//    }
+    }
 
     public Category toEntity() {
         return Category.builder()

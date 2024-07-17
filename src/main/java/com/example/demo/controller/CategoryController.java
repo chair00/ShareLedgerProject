@@ -39,26 +39,33 @@ public class CategoryController {
         return ResponseEntity.ok(category);
     }
 
-//    // 카테고리 목록 조회
-//    @GetMapping("/{ledgerId}/category")
-//    public ResponseEntity<List<CategoryDto>> getCategoryList(@PathVariable Long ledgerId){
-//        List<CategoryDto> categoryList = categoryService.findAll(ledgerId);
+    // 가계부 별 카테고리 목록 조회(서브 카테고리 제외)
+    @GetMapping("/{ledgerId}/category")
+    public ResponseEntity<List<CategoryDto>> getCategoryList(@PathVariable Long ledgerId){
+        List<CategoryDto> categoryList = categoryService.findAll(ledgerId);
+        return ResponseEntity.ok(categoryList);
+    }
+
+//    // 가계부 별 서브 카테고리 목록 조회
+//    @GetMapping("/{ledgerId}/category/{categoryId}")
+//    public ResponseEntity<List<CategoryDto>> getSubCategoryList(@PathVariable Long categoryId){
+//        List<CategoryDto> categoryList = categoryService.findAllSub(categoryId);
 //        return ResponseEntity.ok(categoryList);
 //    }
-//
-//    // 카테고리 수정
-//    @PutMapping("/{ledgerId}/category/{categoryId}")
-//    public ResponseEntity<CategoryDto> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDto categoryDto){
-//        Long updatedCategoryId = categoryService.update(categoryId, categoryDto);
-//        return ResponseEntity.ok(updatedCategory);
-//    }
-//
-//    // 카테고리 삭제
-//    @DeleteMapping("/{ledgerId}/category/{categoryId}")
-//    public ResponseEntity<CategoryDto> deleteCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId){
-//        categoryService.delete(ledgerId, categoryId);
-//        return ResponseEntity.status(HttpStatus.OK).build();
-//    }
+
+    // 카테고리 수정
+    @PutMapping("/{ledgerId}/category/{categoryId}")
+    public ResponseEntity<Long> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDto categoryDto){
+        Long updatedCategoryId = categoryService.update(categoryId, categoryDto);
+        return ResponseEntity.ok(updatedCategoryId);
+    }
+
+    // 카테고리 삭제
+    @DeleteMapping("/{ledgerId}/category/{categoryId}")
+    public ResponseEntity<?> deleteCategory(@PathVariable Long categoryId){
+        categoryService.delete(categoryId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
 
 }

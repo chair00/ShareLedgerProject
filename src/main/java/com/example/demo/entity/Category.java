@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class Category {
     private String type;
 
     @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name="ledgerId")
+    @JoinColumn(name="ledgerId", nullable = false)
     private Ledger ledger;
 
     @ManyToOne(fetch = FetchType.LAZY)

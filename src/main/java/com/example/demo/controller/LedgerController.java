@@ -37,7 +37,7 @@ public class LedgerController {
 
     // 가계부 삭제
     @DeleteMapping("/{ledgerId}")
-    public ResponseEntity<LedgerDto> deleteLedger(@PathVariable Long ledgerId){
+    public ResponseEntity<?> deleteLedger(@PathVariable Long ledgerId){
         ledgerService.deleteLedger(ledgerId);
         return ResponseEntity.status(HttpStatus.OK).build(); // body없을 때 build() 사용
     }
