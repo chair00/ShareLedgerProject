@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.CategoryListResDto;
 import com.example.demo.dto.CategoryReqDto;
 import com.example.demo.dto.CategoryResDto;
 import com.example.demo.dto.SubCategoryReqDto;
@@ -43,17 +44,10 @@ public class CategoryController {
 
     // 가계부 별 카테고리 목록 조회(서브 카테고리 제외)
     @GetMapping("/{ledgerId}/category")
-    public ResponseEntity<List<CategoryResDto>> getCategoryList(@PathVariable Long ledgerId){
-        List<CategoryResDto> categoryList = categoryService.findAll(ledgerId);
+    public ResponseEntity<List<CategoryListResDto>> getCategoryList(@PathVariable Long ledgerId){
+        List<CategoryListResDto> categoryList = categoryService.findAll(ledgerId);
         return ResponseEntity.ok(categoryList);
     }
-
-//    // 가계부 별 서브 카테고리 목록 조회
-//    @GetMapping("/{ledgerId}/category/{categoryId}")
-//    public ResponseEntity<List<CategoryDto>> getSubCategoryList(@PathVariable Long categoryId){
-//        List<CategoryDto> categoryList = categoryService.findAllSub(categoryId);
-//        return ResponseEntity.ok(categoryList);
-//    }
 
     // 카테고리 수정
     @PutMapping("/{ledgerId}/category/{categoryId}")

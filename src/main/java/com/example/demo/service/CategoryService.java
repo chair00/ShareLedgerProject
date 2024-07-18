@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.CategoryListResDto;
 import com.example.demo.dto.CategoryReqDto;
 import com.example.demo.dto.CategoryResDto;
 import com.example.demo.dto.SubCategoryReqDto;
@@ -48,6 +49,7 @@ public class CategoryService {
         return categoryRepository.save(category).getId();
     }
 
+    // 상세 조회
     public CategoryResDto find(Long categoryId) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new IllegalArgumentException("카테고리 id가 존재하지 않습니다."));
 
@@ -58,9 +60,10 @@ public class CategoryService {
         return CategoryResDto.builder().name(category.getName()).type(category.getType()).parentCategoryId(parentId).children(children).build();
     }
 
-    // 카테고리 목록 가져오기 (서브 카테고리 포함)
-    public List<CategoryResDto> findAll(Long ledgerId) {
-        return categoryRepository.findByLedgerIdAndParentIsNull(ledgerId).stream().map(CategoryResDto::new).collect(Collectors.toList());
+    // 카테고리 목록 가져오기 (서브 카테고리 제외)
+    public List<CategoryListResDto> findAll(Long ledgerId) {
+//        return categoryRepository.findByLedgerIdAndParentIsNull(ledgerId).stream().map(CategoryResDto::new).collect(Collectors.toList());
+        return categoryRepository.findByLedgerIdAndParentIsNull(ledgerId).stream().map(CategoryListResDto::new).collect(Collectors.toList());
     }
 
     @Transactional

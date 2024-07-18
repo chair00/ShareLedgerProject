@@ -5,23 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.List;
 @Builder
 @Getter
 @AllArgsConstructor
-public class CategoryResDto {
-
+public class CategoryListResDto {
     private String name;
     private String type;
-    private Long parentCategoryId;
 
-    private List<CategoryResDto> children;
-
-    public CategoryResDto(Category entity) {
+    public CategoryListResDto(Category entity) {
         this.name = entity.getName();
         this.type = entity.getType();
-        if (entity.getParent() != null){
-            this.parentCategoryId = entity.getParent().getId();
-        }
     }
 }
