@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.CategoryDto;
+import com.example.demo.dto.CategoryReqDto;
+import com.example.demo.dto.CategoryResDto;
+import com.example.demo.dto.SubCategoryReqDto;
 import com.example.demo.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,29 +22,29 @@ public class CategoryController {
 
     // 카테고리 추가
     @PostMapping("/{ledgerId}/category")
-    public ResponseEntity<Long> createCategory(@PathVariable Long ledgerId, @Valid @RequestBody CategoryDto categoryDto){
-        Long createCategoryId = categoryService.save(ledgerId, categoryDto);
+    public ResponseEntity<Long> createCategory(@PathVariable Long ledgerId, @Valid @RequestBody CategoryReqDto categoryReqDto){
+        Long createCategoryId = categoryService.save(ledgerId, categoryReqDto);
         return ResponseEntity.ok(createCategoryId);
     }
 
     // 서브 카테고리 추가
     @PostMapping("/{ledgerId}/category/{categoryId}")
-    public ResponseEntity<Long> createCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @Valid @RequestBody CategoryDto categoryDto){
-        Long createCategoryId = categoryService.save(ledgerId, categoryId, categoryDto);
+    public ResponseEntity<Long> createCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @Valid @RequestBody SubCategoryReqDto categoryReqDto){
+        Long createCategoryId = categoryService.save(ledgerId, categoryId, categoryReqDto);
         return ResponseEntity.ok(createCategoryId);
     }
 
     // 카테고리 상세 조회
     @GetMapping("/{ledgerId}/category/{categoryId}")
-    public ResponseEntity<CategoryDto> getCategory(@PathVariable Long categoryId){
-        CategoryDto category = categoryService.find(categoryId);
+    public ResponseEntity<CategoryResDto> getCategory(@PathVariable Long categoryId){
+        CategoryResDto category = categoryService.find(categoryId);
         return ResponseEntity.ok(category);
     }
 
     // 가계부 별 카테고리 목록 조회(서브 카테고리 제외)
     @GetMapping("/{ledgerId}/category")
-    public ResponseEntity<List<CategoryDto>> getCategoryList(@PathVariable Long ledgerId){
-        List<CategoryDto> categoryList = categoryService.findAll(ledgerId);
+    public ResponseEntity<List<CategoryResDto>> getCategoryList(@PathVariable Long ledgerId){
+        List<CategoryResDto> categoryList = categoryService.findAll(ledgerId);
         return ResponseEntity.ok(categoryList);
     }
 
@@ -55,8 +57,8 @@ public class CategoryController {
 
     // 카테고리 수정
     @PutMapping("/{ledgerId}/category/{categoryId}")
-    public ResponseEntity<Long> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDto categoryDto){
-        Long updatedCategoryId = categoryService.update(categoryId, categoryDto);
+    public ResponseEntity<Long> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryReqDto categoryReqDto){
+        Long updatedCategoryId = categoryService.update(categoryId, categoryReqDto);
         return ResponseEntity.ok(updatedCategoryId);
     }
 

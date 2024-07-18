@@ -7,31 +7,18 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Builder
 @Getter
 @AllArgsConstructor
-public class CategoryDto {
+public class CategoryReqDto {
     @NotBlank(message = "카테고리 이름을 입력해야합니다.")
     private String name;
 
     @NotBlank(message = "카테고리 타입을 선택해야합니다.")
     private String type;
 
-    private String parentName;
-
-    private List<CategoryDto> children;
-
-    public CategoryDto(Category entity) {
-        this.name = entity.getName();
-        this.type = entity.getType();
-//
-//        this.children = entity.getChild() == null ? null :
-//                entity.getChild().stream().collect(
-//                        Collectors.toMap(Category::getName, CategoryDto::new));
-    }
+    private List<CategoryReqDto> children;
 
     public Category toEntity() {
         return Category.builder()
