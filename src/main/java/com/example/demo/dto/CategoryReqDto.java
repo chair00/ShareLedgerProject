@@ -18,8 +18,6 @@ public class CategoryReqDto {
     @NotBlank(message = "카테고리 타입을 선택해야합니다.")
     private String type;
 
-    private List<CategoryReqDto> children;
-
     public Category toEntity() {
         return Category.builder()
                 .name(name)
