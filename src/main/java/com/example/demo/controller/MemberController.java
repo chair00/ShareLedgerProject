@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
     // 회원가입
     @Operation(summary = "회원가입", description = "사용자가 계정을 생성한다.")
-    @PostMapping("/signin")
-    public ResponseEntity<?> signin(){
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(){
         return ResponseEntity.ok().body("회원가입");
     }
 

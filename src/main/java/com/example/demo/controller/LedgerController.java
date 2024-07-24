@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @RestController
 @RequestMapping("/ledger")
 @RequiredArgsConstructor
@@ -23,7 +25,7 @@ public class LedgerController {
     @PostMapping("")
     public ResponseEntity<Long> createLedger(@RequestBody LedgerDto ledgerDto){
         Long createdLedgerId = ledgerService.createLedger(ledgerDto);
-        return ResponseEntity.ok(createdLedgerId);
+        return ResponseEntity.created(URI.create("/ledger/" + createdLedgerId)).build();
     }
 
     // 가계부 정보 조회
@@ -37,9 +39,9 @@ public class LedgerController {
     // 가계부 정보 수정
     @Operation(summary = "가계부 정보 수정", description = "가계부 정보를 수정한다.")
     @PutMapping("/{ledgerId}")
-    public ResponseEntity<LedgerDto> updateLedger(@PathVariable Long ledgerId, @RequestBody LedgerDto ledgerDto){
-        LedgerDto updatedLedger = ledgerService.updateLedger(ledgerId, ledgerDto);
-        return ResponseEntity.ok(updatedLedger);
+    public ResponseEntity<Long> updateLedger(@PathVariable Long ledgerId, @RequestBody LedgerDto ledgerDto){
+        Long updatedLedgerId = ledgerService.updateLedger(ledgerId, ledgerDto);
+        return ResponseEntity.created(URI.create("/ledger/" + updatedLedgerId)).build();
     }
 
     // 가계부 삭제

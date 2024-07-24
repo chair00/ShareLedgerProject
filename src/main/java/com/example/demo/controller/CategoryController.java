@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -31,7 +32,7 @@ public class CategoryController {
     @PostMapping("/{ledgerId}/category")
     public ResponseEntity<Long> createCategory(@PathVariable Long ledgerId, @Valid @RequestBody CategoryReqDto categoryReqDto){
         Long createCategoryId = categoryService.save(ledgerId, categoryReqDto);
-        return ResponseEntity.ok(createCategoryId);
+        return ResponseEntity.created(URI.create("/ledger/" + ledgerId + "/category/" + createCategoryId)).build();
     }
 
     // 서브 카테고리 추가
@@ -63,9 +64,9 @@ public class CategoryController {
     @Operation(summary = "카테고리 수정", description = "가계부 내 카테고리 정보를 수정한다.")
     @ApiResponse(responseCode = "200", description = "카테고리 수정 성공 - 카테고리 id를 반환")
     @PutMapping("/{ledgerId}/category/{categoryId}")
-    public ResponseEntity<Long> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryReqDto categoryReqDto){
+    public ResponseEntity<Long> updateCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @RequestBody CategoryReqDto categoryReqDto){
         Long updatedCategoryId = categoryService.update(categoryId, categoryReqDto);
-        return ResponseEntity.ok(updatedCategoryId);
+        return ResponseEntity.created(URI.create("/ledger/" + ledgerId + "/category/" + updatedCategoryId)).build();
     }
 
     // 카테고리 삭제

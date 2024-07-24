@@ -31,11 +31,11 @@ public class LedgerService {
 
     // 가계부 정보 수정
     @Transactional
-    public LedgerDto updateLedger(Long ledgerId, LedgerDto ledgerDto) {
+    public Long updateLedger(Long ledgerId, LedgerDto ledgerDto) {
         Ledger ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다."));
         ledger.setLedgerName(ledgerDto.getLedgerName());
 
-        return new LedgerDto(ledger);
+        return ledger.getId();
     }
 
     // 가계부 삭제
