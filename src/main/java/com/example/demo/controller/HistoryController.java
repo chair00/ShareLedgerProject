@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.response.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,35 +13,35 @@ public class HistoryController {
     // 내역 생성
     @Operation(summary = "내역 생성", description = "가계부에 내역을 생성한다.")
     @PostMapping("/ledger/{ledger_id}/history")
-    public ResponseEntity<?> createHistory(){return ResponseEntity.ok().body("내역 생성");}
+    public ResponseEntity<?> createHistory(){return ResponseEntity.ok().body(ApiResult.builder().message("내역 생성").build());}
 
     // 내역 상세 조회
     @Operation(summary = "내역 상세 조회", description = "생성한 내역을 상세 조회한다.")
     @GetMapping("/ledger/{ledger_id}/history/{history_id}")
-    public ResponseEntity<?> showHistory(){return ResponseEntity.ok().body("내역 상세 조회");}
+    public ResponseEntity<?> showHistory(){return ResponseEntity.ok().body(ApiResult.builder().message("내역 상세 조회").build());}
 
     // 내역 수정
     @Operation(summary = "내역 수정", description = "생성한 내역을 수정한다.")
     @PutMapping("/ledger/{ledger_id}/history/{history_id}")
-    public ResponseEntity<?> updateHistory(){return ResponseEntity.ok().body("내역 수정");}
+    public ResponseEntity<?> updateHistory(){return ResponseEntity.ok().body(ApiResult.builder().message("내역 수정").build());}
 
     // 내역 삭제
     @Operation(summary = "내역 삭제", description = "생성한 내역을 삭제한다.")
     @DeleteMapping("/ledger/{ledger_id}/history/{history_id}")
-    public ResponseEntity<?> deleteHistory(){return ResponseEntity.ok().body("내역 삭제");}
+    public ResponseEntity<?> deleteHistory(){return ResponseEntity.ok().body(ApiResult.builder().message("내역 삭제").build());}
 
     // 내역 목록 조회
     @Operation(summary = "내역 목록 조회", description = "일간/월간 내역 목록을 조회한다.")
     @GetMapping("/ledger/{ledger_id}/history")
-    public ResponseEntity<?> showHistoryList(){return ResponseEntity.ok().body("내역 목록 조회");}
+    public ResponseEntity<?> showHistoryList(){return ResponseEntity.ok().body(ApiResult.builder().message("내역 목록 조회").build());}
 
     // 총 금액 조회
     @Operation(summary = "총 금액 조회", description = "일간/월간/연간/사용자 지정 조건에 따라 총 금액을 조회한다.")
     @GetMapping("/ledger/{ledger_id}/price")
-    public ResponseEntity<?> showTotalPrice(){return ResponseEntity.ok().body("총 금액 조회");}
+    public ResponseEntity<?> showTotalPrice(){return ResponseEntity.ok().body(ApiResult.builder().message("총 금액 조회").build());}
 
     // 총 금액 목록 조회
     @Operation(summary = "총 금액 목록 조회", description = "일간/월간/카테고리 별 등 조건에 따라 목록을 조회한다.")
     @GetMapping("/ledger/{ledger_id}/prices")
-    public ResponseEntity<?> showTotalPriceList(){return ResponseEntity.ok().body("총 금액 목록 조회");}
+    public ResponseEntity<?> showTotalPriceList(){return ResponseEntity.ok().body(ApiResult.builder().message("총 금액 목록 조회").build());}
 }

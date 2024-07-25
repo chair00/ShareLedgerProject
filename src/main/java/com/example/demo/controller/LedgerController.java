@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.LedgerDto;
+import com.example.demo.response.ApiResult;
 import com.example.demo.service.LedgerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +24,7 @@ public class LedgerController {
     // 가계부 생성
     @Operation(summary = "가계부 생성", description = "새로운 가계부를 생성한다. 생성한 사용자는 그 가계부의 관리자가 된다.")
     @PostMapping("")
-    public ResponseEntity<Long> createLedger(@RequestBody LedgerDto ledgerDto){
+    public ResponseEntity<?> createLedger(@RequestBody LedgerDto ledgerDto){
         Long createdLedgerId = ledgerService.createLedger(ledgerDto);
         return ResponseEntity.created(URI.create("/ledger/" + createdLedgerId)).build();
     }
@@ -31,15 +32,15 @@ public class LedgerController {
     // 가계부 정보 조회
     @Operation(summary = "가계부 정보 조회", description = "가계부 정보를 조회한다.")
     @GetMapping("/{ledgerId}")
-    public ResponseEntity<LedgerDto> getLedger(@PathVariable Long ledgerId){
+    public ResponseEntity<?> getLedger(@PathVariable Long ledgerId){
         LedgerDto ledger = ledgerService.getLedger(ledgerId);
-        return ResponseEntity.ok(ledger);
+        return ResponseEntity.ok(ApiResult.builder().data(ledger).build());
     }
 
     // 가계부 정보 수정
     @Operation(summary = "가계부 정보 수정", description = "가계부 정보를 수정한다.")
     @PutMapping("/{ledgerId}")
-    public ResponseEntity<Long> updateLedger(@PathVariable Long ledgerId, @RequestBody LedgerDto ledgerDto){
+    public ResponseEntity<?> updateLedger(@PathVariable Long ledgerId, @RequestBody LedgerDto ledgerDto){
         Long updatedLedgerId = ledgerService.updateLedger(ledgerId, ledgerDto);
         return ResponseEntity.created(URI.create("/ledger/" + updatedLedgerId)).build();
     }
@@ -49,6 +50,6 @@ public class LedgerController {
     @DeleteMapping("/{ledgerId}")
     public ResponseEntity<?> deleteLedger(@PathVariable Long ledgerId){
         ledgerService.deleteLedger(ledgerId);
-        return ResponseEntity.status(HttpStatus.OK).build(); // body없을 때 build() 사용
+        return ResponseEntity.ok(ApiResult.builder().message("가계부" + ledgerId + " 삭제 완료").build()); // body없을 때 build() 사용
     }
 }

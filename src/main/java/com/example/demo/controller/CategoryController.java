@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.response.ApiResult;
 import com.example.demo.dto.CategoryListResDto;
 import com.example.demo.dto.CategoryReqDto;
 import com.example.demo.dto.CategoryResDto;
@@ -39,25 +40,25 @@ public class CategoryController {
     @Operation(summary = "서브 카테고리 추가", description = "가계부에 생성된 상위 카테고리 내 하위 카테고리를 생성한다. {categoryId}는 상위 카테고리 id를 의미한다. type을 따로 설정하지 않고 상위 카테고리의 type으로 자동 설정한다.")
     @ApiResponse(responseCode = "200", description = "카테고리 생성 성공 - 카테고리 id를 반환")
     @PostMapping("/{ledgerId}/category/{categoryId}")
-    public ResponseEntity<Long> createCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @Valid @RequestBody SubCategoryReqDto categoryReqDto){
+    public ResponseEntity<?> createCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @Valid @RequestBody SubCategoryReqDto categoryReqDto){
         Long createCategoryId = categoryService.save(ledgerId, categoryId, categoryReqDto);
-        return ResponseEntity.ok(createCategoryId);
+        return ResponseEntity.ok(ApiResult.builder().data(createCategoryId).build());
     }
 
     // 카테고리 상세 조회
     @Operation(summary = "카테고리 상세 조회", description = "가계부 내 카테고리 정보를 상세 조회한다. 상위 카테고리의 경우 하위 카테고리 리스트도 함께 조회한다.")
     @GetMapping("/{ledgerId}/category/{categoryId}")
-    public ResponseEntity<CategoryResDto> getCategory(@PathVariable Long categoryId){
+    public ResponseEntity<?> getCategory(@PathVariable Long categoryId){
         CategoryResDto category = categoryService.find(categoryId);
-        return ResponseEntity.ok(category);
+        return ResponseEntity.ok(ApiResult.builder().data(category).build());
     }
 
     // 가계부 별 카테고리 목록 조회(서브 카테고리 제외)
     @Operation(summary = "카테고리 목록 조회", description = "가계부 내 카테고리 목록를 조회한다. 하위 카테고리는 제외한다.")
     @GetMapping("/{ledgerId}/category")
-    public ResponseEntity<List<CategoryListResDto>> getCategoryList(@PathVariable Long ledgerId){
+    public ResponseEntity<?> getCategoryList(@PathVariable Long ledgerId){
         List<CategoryListResDto> categoryList = categoryService.findAll(ledgerId);
-        return ResponseEntity.ok(categoryList);
+        return ResponseEntity.ok(ApiResult.builder().data(categoryList).build());
     }
 
     // 카테고리 수정
@@ -74,7 +75,7 @@ public class CategoryController {
     @DeleteMapping("/{ledgerId}/category/{categoryId}")
     public ResponseEntity<?> deleteCategory(@PathVariable Long categoryId){
         categoryService.delete(categoryId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok(ApiResult.builder().data("카테고리" + categoryId + " 삭제 완료").build());
     }
 
 
