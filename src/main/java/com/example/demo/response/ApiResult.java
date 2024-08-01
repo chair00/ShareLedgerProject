@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+
+@Schema(description = "응답 DTO")
 public class ApiResult<T> {
     @Schema(description = "메시지")
     private String message;
