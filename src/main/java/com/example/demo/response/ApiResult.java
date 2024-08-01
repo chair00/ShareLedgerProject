@@ -1,6 +1,7 @@
 package com.example.demo.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResult<T> {
+    @Schema(description = "메시지")
     private String message;
+    @Schema(description = "데이터")
     private T data;
 
     @Builder
