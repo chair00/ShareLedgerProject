@@ -29,9 +29,9 @@ public class CategoryController {
 
     // 카테고리 추가
     @Operation(summary = "카테고리 추가", description = "가계부 내 상위 카테고리를 생성한다.")
-    @ApiResponse(responseCode = "200", description = "카테고리 생성 성공 - 카테고리 id를 반환")
+    @ApiResponse(responseCode = "200", description = "카테고리 생성 성공 - 카테고리 id를 반환", useReturnTypeSchema = true)
     @PostMapping("/{ledgerId}/category")
-    public ResponseEntity<Long> createCategory(@PathVariable Long ledgerId, @Valid @RequestBody CategoryReqDto categoryReqDto){
+    public ResponseEntity<?> createCategory(@PathVariable Long ledgerId, @Valid @RequestBody CategoryReqDto categoryReqDto){
         Long createCategoryId = categoryService.save(ledgerId, categoryReqDto);
         return ResponseEntity.created(URI.create("/ledger/" + ledgerId + "/category/" + createCategoryId)).build();
     }
