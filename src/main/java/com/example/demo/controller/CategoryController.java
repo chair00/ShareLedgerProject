@@ -32,7 +32,7 @@ public class CategoryController {
 
     // 카테고리 추가
     @Operation(summary = "카테고리 추가", description = "가계부 내 상위 카테고리를 생성한다.")
-    @ApiResponse(responseCode = "200", description = "카테고리 생성 성공 - 카테고리 id를 반환", useReturnTypeSchema = true)
+    @ApiResponse(responseCode = "200", description = "카테고리 생성 성공 - 카테고리 id를 반환", content = @Content(schema = @Schema(implementation = ApiResult.class)))
     @PostMapping("/{ledgerId}/category")
     public ResponseEntity<?> createCategory(@PathVariable Long ledgerId, @Valid @RequestBody CategoryReqDto categoryReqDto){
         Long createCategoryId = categoryService.save(ledgerId, categoryReqDto);
@@ -45,8 +45,7 @@ public class CategoryController {
             value = {
                     @ApiResponse(
                             responseCode = "200", description = "카테고리 생성 성공 - 카테고리 id를 반환",
-                            content = @Content(
-                                    schema = @Schema(implementation = ApiResult.class)))
+                            content = @Content(schema = @Schema(implementation = ApiResult.class)))
             })
     @PostMapping("/{ledgerId}/category/{categoryId}")
     public ResponseEntity<?> createCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @Valid @RequestBody SubCategoryReqDto categoryReqDto){
@@ -56,6 +55,7 @@ public class CategoryController {
 
     // 카테고리 상세 조회
     @Operation(summary = "카테고리 상세 조회", description = "가계부 내 카테고리 정보를 상세 조회한다. 상위 카테고리의 경우 하위 카테고리 리스트도 함께 조회한다.")
+    @ApiResponse(content = @Content(schema = @Schema(implementation = ApiResult.class)))
     @GetMapping("/{ledgerId}/category/{categoryId}")
     public ResponseEntity<?> getCategory(@PathVariable Long categoryId){
         CategoryResDto category = categoryService.find(categoryId);
