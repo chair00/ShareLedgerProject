@@ -7,6 +7,8 @@ import com.example.demo.dto.CategoryResDto;
 import com.example.demo.dto.SubCategoryReqDto;
 import com.example.demo.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,9 +41,13 @@ public class CategoryController {
 
     // 서브 카테고리 추가
     @Operation(summary = "서브 카테고리 추가", description = "가계부에 생성된 상위 카테고리 내 하위 카테고리를 생성한다. {categoryId}는 상위 카테고리 id를 의미한다. type을 따로 설정하지 않고 상위 카테고리의 type으로 자동 설정한다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "카테고리 생성 성공 - 카테고리 id를 반환", useReturnTypeSchema = true)
-    })
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200", description = "카테고리 생성 성공 - 카테고리 id를 반환",
+                            content = @Content(
+                                    schema = @Schema(implementation = ApiResult.class)))
+            })
     @PostMapping("/{ledgerId}/category/{categoryId}")
     public ResponseEntity<?> createCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @Valid @RequestBody SubCategoryReqDto categoryReqDto){
         Long createCategoryId = categoryService.save(ledgerId, categoryId, categoryReqDto);
