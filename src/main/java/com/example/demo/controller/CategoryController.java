@@ -1,10 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.*;
 import com.example.demo.response.ApiResult;
-import com.example.demo.dto.CategoryListResDto;
-import com.example.demo.dto.CategoryReqDto;
-import com.example.demo.dto.CategoryResDto;
-import com.example.demo.dto.SubCategoryReqDto;
 import com.example.demo.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,8 +32,10 @@ public class CategoryController {
     @ApiResponse(responseCode = "200", description = "카테고리 생성 성공 - 카테고리 id를 반환", content = @Content(schema = @Schema(implementation = ApiResult.class)))
     @PostMapping("/{ledgerId}/category")
     public ResponseEntity<?> createCategory(@PathVariable Long ledgerId, @Valid @RequestBody CategoryReqDto categoryReqDto){
-        Long createCategoryId = categoryService.save(ledgerId, categoryReqDto);
-        return ResponseEntity.created(URI.create("/ledger/" + ledgerId + "/category/" + createCategoryId)).build();
+        // Long createCategoryId = categoryService.save(ledgerId, categoryReqDto);
+        CategoryDTO.Response response = categoryService.save(ledgerId, categoryReqDto);
+        return ResponseEntity.created(URI.create("/ledger/" + ledgerId + "/category/" + response.getId())).body(response.getId());
+        //dto가 id를 반납하니까 dto에 id를 넣어야할까??? ㅈㄴ 고민되
     }
 
     // 서브 카테고리 추가

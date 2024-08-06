@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.example.demo.dto.CategoryDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

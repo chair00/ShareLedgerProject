@@ -1,9 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.CategoryListResDto;
-import com.example.demo.dto.CategoryReqDto;
-import com.example.demo.dto.CategoryResDto;
-import com.example.demo.dto.SubCategoryReqDto;
+import com.example.demo.dto.*;
 import com.example.demo.entity.Category;
 import com.example.demo.entity.Ledger;
 import com.example.demo.repository.CategoryRepository;
@@ -22,17 +19,26 @@ public class CategoryService {
     private final LedgerRepository ledgerRepository;
 
 
+    // 카테고리 생성
+//    public Long save(Long ledgerId, CategoryReqDto categoryReqDto) {
+//        Ledger ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다"));
+//        Category category = categoryReqDto.toEntity();
+//
+//        category.setLedger(ledger);
+//
+//        return categoryRepository.save(category).getId();
+//    }
 
-    public Long save(Long ledgerId, CategoryReqDto categoryReqDto) {
+    public CategoryDTO.Response save(Long ledgerId, CategoryReqDto categoryReqDto) {
         Ledger ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다"));
         Category category = categoryReqDto.toEntity();
 
         category.setLedger(ledger);
 
-        return categoryRepository.save(category).getId();
+        return new CategoryDTO.Response(categoryRepository.save(category));
     }
 
-    // 서브 카테고리 추가
+    // 서브 카테고리 생성
     public Long save(Long ledgerId, Long parentId, SubCategoryReqDto categoryReqDto) {
         Ledger ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다"));
         Category category = categoryReqDto.toEntity();
