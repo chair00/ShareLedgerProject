@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.LedgerDto;
+import com.example.demo.dto.ReturnIdDTO;
 import com.example.demo.entity.Ledger;
 import com.example.demo.repository.LedgerRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +15,9 @@ public class LedgerService {
     private final LedgerRepository ledgerRepository;
 
     // 가계부 생성
-    public Long createLedger(LedgerDto ledgerDto) {
+    public ReturnIdDTO createLedger(LedgerDto ledgerDto) {
 
-        return ledgerRepository.save(ledgerDto.toEntity()).getId();
+        return new ReturnIdDTO(ledgerRepository.save(ledgerDto.toEntity()));
 
     }
 
@@ -31,11 +32,11 @@ public class LedgerService {
 
     // 가계부 정보 수정
     @Transactional
-    public Long updateLedger(Long ledgerId, LedgerDto ledgerDto) {
+    public ReturnIdDTO updateLedger(Long ledgerId, LedgerDto ledgerDto) {
         Ledger ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다."));
         ledger.setLedgerName(ledgerDto.getLedgerName());
 
-        return ledger.getId();
+        return new ReturnIdDTO(ledger);
     }
 
     // 가계부 삭제

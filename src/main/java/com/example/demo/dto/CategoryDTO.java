@@ -31,7 +31,6 @@ public class CategoryDTO {
                     .build();
         }
     }
-
     @Getter
     @Setter
     @Schema(description = "하위 카테고리 생성 요청")
@@ -71,8 +70,6 @@ public class CategoryDTO {
     @Setter
     @Schema(description = "카테고리 데이터 응답")
     public static class Response {
-        @Schema(description = "카테고리 id")
-        private Long id;
 
         @Schema(description = "카테고리 이름")
         private String name;
@@ -87,7 +84,6 @@ public class CategoryDTO {
         private List<CategoryResDto> children;
 
         public Response(Category entity) {
-            this.id = entity.getId();
             this.name = entity.getName();
             this.type = entity.getType();
 
