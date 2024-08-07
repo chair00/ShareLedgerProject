@@ -81,7 +81,7 @@ public class CategoryDTO {
         private Long parentCategoryId;
 
         @Schema(description = "하위 카테고리 list")
-        private List<CategoryResDto> children;
+        private List<CategoryDTO.Response> children;
 
         public Response(Category entity) {
             this.name = entity.getName();
@@ -90,6 +90,16 @@ public class CategoryDTO {
             if (entity.getParent() != null){
                 this.parentCategoryId = entity.getParent().getId();
             }
+        }
+
+        public Response(Category entity, List<CategoryDTO.Response> children) {
+            this.name = entity.getName();
+            this.type = entity.getType();
+
+            if (entity.getParent() != null){
+                this.parentCategoryId = entity.getParent().getId();
+            }
+            this.children = children;
         }
 
         @Schema(description = "상위 카테고리 목록 응답")

@@ -56,14 +56,15 @@ public class CategoryService {
     }
 
     // 상세 조회
-    public CategoryResDto find(Long categoryId) {
+    public CategoryDTO.Response find(Long categoryId) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new IllegalArgumentException("카테고리 id가 존재하지 않습니다."));
 
         // 부모 카테고리가 없는 경우를 처리
-        Long parentId = (category.getParent() != null) ? category.getParent().getId() : null;
-        List<CategoryResDto> children = categoryRepository.findByParentId(categoryId).stream().map(CategoryResDto::new).collect(Collectors.toList());
+        //Long parentId = (category.getParent() != null) ? category.getParent().getId() : null;
+        List<CategoryDTO.Response> children = categoryRepository.findByParentId(categoryId).stream().map(CategoryDTO.Response::new).collect(Collectors.toList());
 
-        return CategoryResDto.builder().name(category.getName()).type(category.getType()).parentCategoryId(parentId).children(children).build();
+        return new CategoryDTO.Response(category, children);
+        //return CategoryResDto.builder().name(category.getName()).type(category.getType()).parentCategoryId(parentId).children(children).build();
     }
 
     // 카테고리 목록 가져오기 (서브 카테고리 제외)
@@ -73,13 +74,13 @@ public class CategoryService {
     }
 
     @Transactional
-    public Long update(Long categoryId, CategoryReqDto categoryReqDto) {
+    public ReturnIdDTO update(Long categoryId, CategoryReqDto categoryReqDto) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new IllegalArgumentException("카테고리 id가 존재하지 않습니다."));
 
         category.setName(categoryReqDto.getName());
         category.setType(categoryReqDto.getType());
 
-        return category.getId();
+        return new ReturnIdDTO(category);
     }
 
     public void delete(Long categoryId) {

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.dto.ResponseDTO;
 import com.example.demo.response.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,32 +15,35 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "계정", description = "계정 API")
 public class MemberController {
+
+    ResponseDTO res = new ResponseDTO("성공");
+
     // 회원가입
     @Operation(summary = "회원가입", description = "사용자가 계정을 생성한다.")
     @PostMapping("/signup")
     public ResponseEntity<?> signup(){
-        return ResponseEntity.ok().body(ApiResult.builder().message("회원가입").build());
+        return ResponseEntity.ok(res);
     }
 
     // 로그인
     @Operation(summary = "로그인", description = "사용자가 생성된 계정으로 로그인한다.")
     @PostMapping("/login")
     public ResponseEntity<?> login(){
-        return ResponseEntity.ok().body(ApiResult.builder().message("로그인").build());
+        return ResponseEntity.ok(res);
     }
 
     // 로그아웃
     @Operation(summary = "로그아웃", description = "로그인된 계정에서 로그아웃한다.")
     @PostMapping("/logout")
     public ResponseEntity<?> logout(){
-        return ResponseEntity.ok().body(ApiResult.builder().message("로그아웃").build());
+        return ResponseEntity.ok(res);
     }
 
     // 탈퇴
     @Operation(summary = "탈퇴", description = "사용자가 계정을 탈퇴한다.")
     @PostMapping("/withdraw")
     public ResponseEntity<?> withdraw(){
-        return ResponseEntity.ok().body(ApiResult.builder().message("탈퇴").build());
+        return ResponseEntity.ok(res);
     }
 
     // 계정 정보 조회
@@ -65,11 +69,11 @@ public class MemberController {
     // 프로필 조회
     @Operation(summary = "프로필 조회", description = "사용자가 등록한 프로필을 조회한다.")
     @GetMapping("/member/profile")
-    public ResponseEntity<?> showProfile() {return ResponseEntity.ok().body(ApiResult.builder().message("프로필 조회").build());}
+    public ResponseEntity<?> showProfile() {return ResponseEntity.ok(res);}
 
     // 프로필 수정
     @Operation(summary = "프로필 수정", description = "사용자가 등록한 프로필을 수정한다.")
     @PutMapping("/member/profile")
-    public ResponseEntity<?> updateProfile() {return ResponseEntity.ok().body(ApiResult.builder().message("프로필 수정").build());}
+    public ResponseEntity<?> updateProfile() {return ResponseEntity.ok(res);}
 
 }

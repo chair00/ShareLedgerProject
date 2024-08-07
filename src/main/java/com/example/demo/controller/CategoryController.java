@@ -34,7 +34,7 @@ public class CategoryController {
     public ResponseEntity<ReturnIdDTO> createCategory(@PathVariable Long ledgerId, @Valid @RequestBody CategoryReqDto categoryReqDto){
         // Long createCategoryId = categoryService.save(ledgerId, categoryReqDto);
         ReturnIdDTO createdId = categoryService.save(ledgerId, categoryReqDto);
-        return ResponseEntity.created(URI.create("/ledger/" + ledgerId + "/category/" + createdId)).body(createdId);
+        return ResponseEntity.ok(createdId);
         //dto가 id를 반납하니까 dto에 id를 넣어야할까??? ㅈㄴ 고민되
     }
 
@@ -50,9 +50,9 @@ public class CategoryController {
     @Operation(summary = "카테고리 상세 조회", description = "가계부 내 카테고리 정보를 상세 조회한다. 상위 카테고리의 경우 하위 카테고리 리스트도 함께 조회한다.")
     @ApiResponse(content = @Content(schema = @Schema(implementation = ApiResult.class)))
     @GetMapping("/{ledgerId}/category/{categoryId}")
-    public ResponseEntity<?> getCategory(@PathVariable Long categoryId){
-        CategoryResDto category = categoryService.find(categoryId);
-        return ResponseEntity.ok(ApiResult.builder().data(category).build());
+    public ResponseEntity<CategoryDTO.Response> getCategory(@PathVariable Long categoryId){
+        CategoryDTO.Response category = categoryService.find(categoryId);
+        return ResponseEntity.ok(category);
     }
 
     // 가계부 별 카테고리 목록 조회(서브 카테고리 제외)
@@ -67,17 +67,17 @@ public class CategoryController {
     @Operation(summary = "카테고리 수정", description = "가계부 내 카테고리 정보를 수정한다.")
     @ApiResponse(responseCode = "200", description = "카테고리 수정 성공 - 카테고리 id를 반환")
     @PutMapping("/{ledgerId}/category/{categoryId}")
-    public ResponseEntity<Long> updateCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @RequestBody CategoryReqDto categoryReqDto){
-        Long updatedCategoryId = categoryService.update(categoryId, categoryReqDto);
-        return ResponseEntity.created(URI.create("/ledger/" + ledgerId + "/category/" + updatedCategoryId)).build();
+    public ResponseEntity<ReturnIdDTO> updateCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @RequestBody CategoryReqDto categoryReqDto){
+        ReturnIdDTO updatedId = categoryService.update(categoryId, categoryReqDto);
+        return ResponseEntity.ok(updatedId);
     }
 
     // 카테고리 삭제
     @Operation(summary = "카테고리 삭제", description = "가계부 내 카테고리를 삭제한다.")
     @DeleteMapping("/{ledgerId}/category/{categoryId}")
-    public ResponseEntity<?> deleteCategory(@PathVariable Long categoryId){
+    public ResponseEntity<ReturnIdDTO> deleteCategory(@PathVariable Long categoryId){
         categoryService.delete(categoryId);
-        return ResponseEntity.ok(ApiResult.builder().data("카테고리" + categoryId + " 삭제 완료").build());
+        return ResponseEntity.ok(new ReturnIdDTO(categoryId));
     }
 
 

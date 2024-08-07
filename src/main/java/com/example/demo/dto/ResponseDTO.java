@@ -10,4 +10,8 @@ import lombok.Setter;
 public class ResponseDTO {
     @Schema(description = "메시지")
     private String message;
+
+    public ResponseDTO(String message) {
+        this.message = message;
+    }
 }
