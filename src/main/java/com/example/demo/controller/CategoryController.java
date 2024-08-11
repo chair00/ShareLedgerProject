@@ -58,9 +58,9 @@ public class CategoryController {
     // 가계부 별 카테고리 목록 조회(서브 카테고리 제외)
     @Operation(summary = "카테고리 목록 조회", description = "가계부 내 카테고리 목록를 조회한다. 하위 카테고리는 제외한다.")
     @GetMapping("/{ledgerId}/category")
-    public ResponseEntity<?> getCategoryList(@PathVariable Long ledgerId){
-        List<CategoryListResDto> categoryList = categoryService.findAll(ledgerId);
-        return ResponseEntity.ok(ApiResult.builder().data(categoryList).build());
+    public ResponseEntity<List<CategoryDTO.Response>> getCategoryList(@PathVariable Long ledgerId){
+        List<CategoryDTO.Response> categoryList = categoryService.findAll(ledgerId);
+        return ResponseEntity.ok(categoryList);
     }
 
     // 카테고리 수정
