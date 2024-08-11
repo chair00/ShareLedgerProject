@@ -29,7 +29,6 @@ public class CategoryController {
 
     // 카테고리 추가
     @Operation(summary = "카테고리 추가", description = "가계부 내 상위 카테고리를 생성한다.")
-    @ApiResponse(responseCode = "200", description = "카테고리 생성 성공 - 카테고리 id를 반환", content = @Content(schema = @Schema(implementation = ApiResult.class)))
     @PostMapping("/{ledgerId}/category")
     public ResponseEntity<ReturnIdDTO> createCategory(@PathVariable Long ledgerId, @Valid @RequestBody CategoryReqDto categoryReqDto){
         // Long createCategoryId = categoryService.save(ledgerId, categoryReqDto);
@@ -48,7 +47,6 @@ public class CategoryController {
 
     // 카테고리 상세 조회
     @Operation(summary = "카테고리 상세 조회", description = "가계부 내 카테고리 정보를 상세 조회한다. 상위 카테고리의 경우 하위 카테고리 리스트도 함께 조회한다.")
-    @ApiResponse(content = @Content(schema = @Schema(implementation = ApiResult.class)))
     @GetMapping("/{ledgerId}/category/{categoryId}")
     public ResponseEntity<CategoryDTO.Response> getCategory(@PathVariable Long categoryId){
         CategoryDTO.Response category = categoryService.find(categoryId);
@@ -65,7 +63,6 @@ public class CategoryController {
 
     // 카테고리 수정
     @Operation(summary = "카테고리 수정", description = "가계부 내 카테고리 정보를 수정한다.")
-    @ApiResponse(responseCode = "200", description = "카테고리 수정 성공 - 카테고리 id를 반환")
     @PutMapping("/{ledgerId}/category/{categoryId}")
     public ResponseEntity<ReturnIdDTO> updateCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @RequestBody CategoryReqDto categoryReqDto){
         ReturnIdDTO updatedId = categoryService.update(categoryId, categoryReqDto);
