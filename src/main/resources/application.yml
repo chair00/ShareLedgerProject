@@ -1,0 +1,70 @@
+# Datasource
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: # 발급 받은 client-id #
+            client-secret: # 발급 받은 client-secret #
+            scope: # 필요한 권한 #
+          kakao:
+            client-id: # 발급 받은 client-id #
+            client-secret: # 발급 받은 client-secret #
+            scope: # 필요한 권한 #
+            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+            client-name: kakao
+            client-authentication-method: POST
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+
+# applecation.propertis 파일 내용
+
+##spring.jpa.hibernate.ddl-auto=create-drop
+##spring.datasource.driverClassName=org.mariadb.jdbc.Driver
+##spring.datasource.url=jdbc:mariadb://share-ledger.c5oyumyeif4w.ap-northeast-2.rds.amazonaws.com:3306/share_ledger
+##spring.datasource.username=hjp
+##spring.datasource.password=20021029
+#
+## Datasource ??
+#  spring.datasource.driver-class-name=org.h2.Driver
+#  spring.datasource.url=jdbc:h2:mem:test
+#  spring.datasource.username=sa
+#  spring.datasource.password=
+#
+#  # H2 ??????? Hibernate dialect(JPA? ??? ?????? ???? ????)
+#  spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+#  # ?????? ??? ??? ???? ???? ???? ????, ?????? ??? ???? ????
+#  spring.jpa.hibernate.ddl-auto=create-drop
+#  # ??? ?? SQL? ??? ??
+#  spring.jpa.show-sql=true
+#  spring.jpa.properties.hibernate.format_sql=true
+#
+#  # H2 ?? ??
+#  spring.h2.console.enabled=true
+#  spring.h2.console.path=/h2
