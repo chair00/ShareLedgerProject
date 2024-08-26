@@ -4,7 +4,6 @@ import com.example.demo.entity.Category;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -73,6 +72,9 @@ public class CategoryDTO {
     @Schema(description = "카테고리 데이터 응답")
     public static class Response {
 
+        @Schema(description = "카테고리 id")
+        private Long id;
+
         @Schema(description = "카테고리 이름")
         private String name;
 
@@ -85,8 +87,9 @@ public class CategoryDTO {
         @Schema(description = "하위 카테고리 list")
         private List<CategoryDTO.Response> children;
 
-
+        // 하위 카테고리 데이터 조회(제 2계층)
         public Response(Category entity) {
+            this.id = entity.getId();
             this.name = entity.getName();
             this.type = entity.getType();
 
@@ -95,13 +98,11 @@ public class CategoryDTO {
             }
         }
 
+        // 상위 카테고리 데이터 조회(제 1계층)
         public Response(Category entity, List<CategoryDTO.Response> children) {
+            this.id = entity.getId();
             this.name = entity.getName();
             this.type = entity.getType();
-
-            if (entity.getParent() != null){
-                this.parentCategoryId = entity.getParent().getId();
-            }
             this.children = children;
         }
 

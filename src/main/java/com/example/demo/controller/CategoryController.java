@@ -30,7 +30,7 @@ public class CategoryController {
     // 카테고리 추가
     @Operation(summary = "카테고리 추가", description = "가계부 내 상위 카테고리를 생성한다.")
     @PostMapping("/{ledgerId}/category")
-    public ResponseEntity<ReturnIdDTO> createCategory(@PathVariable Long ledgerId, @Valid @RequestBody CategoryReqDto categoryReqDto){
+    public ResponseEntity<ReturnIdDTO> createCategory(@PathVariable Long ledgerId, @Valid @RequestBody CategoryDTO.Create categoryReqDto){
         // Long createCategoryId = categoryService.save(ledgerId, categoryReqDto);
         ReturnIdDTO createdId = categoryService.save(ledgerId, categoryReqDto);
         return ResponseEntity.ok(createdId);
@@ -40,7 +40,7 @@ public class CategoryController {
     // 서브 카테고리 추가
     @Operation(summary = "서브 카테고리 추가", description = "가계부에 생성된 상위 카테고리 내 하위 카테고리를 생성한다. {categoryId}는 상위 카테고리 id를 의미한다. type을 따로 설정하지 않고 상위 카테고리의 type으로 자동 설정한다.")
     @PostMapping("/{ledgerId}/category/{categoryId}")
-    public ResponseEntity<ReturnIdDTO> createCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @Valid @RequestBody SubCategoryReqDto categoryReqDto){
+    public ResponseEntity<ReturnIdDTO> createCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @Valid @RequestBody CategoryDTO.SubCreate categoryReqDto){
         ReturnIdDTO createdId = categoryService.save(ledgerId, categoryId, categoryReqDto);
         return ResponseEntity.ok(createdId);
     }
@@ -64,7 +64,7 @@ public class CategoryController {
     // 카테고리 수정
     @Operation(summary = "카테고리 수정", description = "가계부 내 카테고리 정보를 수정한다.")
     @PutMapping("/{ledgerId}/category/{categoryId}")
-    public ResponseEntity<ReturnIdDTO> updateCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @RequestBody CategoryReqDto categoryReqDto){
+    public ResponseEntity<ReturnIdDTO> updateCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @RequestBody CategoryDTO.Update categoryReqDto){
         ReturnIdDTO updatedId = categoryService.update(categoryId, categoryReqDto);
         return ResponseEntity.ok(updatedId);
     }

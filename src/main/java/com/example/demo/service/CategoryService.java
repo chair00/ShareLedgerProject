@@ -29,7 +29,7 @@ public class CategoryService {
 //        return categoryRepository.save(category).getId();
 //    }
 
-    public ReturnIdDTO save(Long ledgerId, CategoryReqDto categoryReqDto) {
+    public ReturnIdDTO save(Long ledgerId, CategoryDTO.Create categoryReqDto) {
         Ledger ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다"));
         Category category = categoryReqDto.toEntity();
 
@@ -39,7 +39,7 @@ public class CategoryService {
     }
 
     // 서브 카테고리 생성
-    public ReturnIdDTO save(Long ledgerId, Long parentId, SubCategoryReqDto categoryReqDto) {
+    public ReturnIdDTO save(Long ledgerId, Long parentId, CategoryDTO.SubCreate categoryReqDto) {
         Ledger ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다"));
         Category category = categoryReqDto.toEntity();
 
@@ -74,7 +74,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public ReturnIdDTO update(Long categoryId, CategoryReqDto categoryReqDto) {
+    public ReturnIdDTO update(Long categoryId, CategoryDTO.Update categoryReqDto) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new IllegalArgumentException("카테고리 id가 존재하지 않습니다."));
 
         category.setName(categoryReqDto.getName());

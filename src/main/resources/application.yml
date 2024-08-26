@@ -17,30 +17,30 @@ spring:
     console:
       enabled: true
       path: /h2
-
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: # 발급 받은 client-id #
-            client-secret: # 발급 받은 client-secret #
-            scope: # 필요한 권한 #
-          kakao:
-            client-id: # 발급 받은 client-id #
-            client-secret: # 발급 받은 client-secret #
-            scope: # 필요한 권한 #
-            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
-            authorization-grant-type: authorization_code
-            client-name: kakao
-            client-authentication-method: POST
-
-        provider:
-          kakao:
-            authorization-uri: https://kauth.kakao.com/oauth/authorize
-            token-uri: https://kauth.kakao.com/oauth/token
-            user-info-uri: https://kapi.kakao.com/v2/user/me
-            user-name-attribute: id
+# 로그인 구현에 필요한 애들
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            client-id: # 발급 받은 client-id #
+#            client-secret: # 발급 받은 client-secret #
+#            scope: # 필요한 권한 #
+#          kakao:
+#            client-id: # 발급 받은 client-id #
+#            client-secret: # 발급 받은 client-secret #
+#            scope: # 필요한 권한 #
+#            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+#            authorization-grant-type: authorization_code
+#            client-name: kakao
+#            client-authentication-method: POST
+#
+#        provider:
+#          kakao:
+#            authorization-uri: https://kauth.kakao.com/oauth/authorize
+#            token-uri: https://kauth.kakao.com/oauth/token
+#            user-info-uri: https://kapi.kakao.com/v2/user/me
+#            user-name-attribute: id
 
 
 # applecation.propertis 파일 내용
