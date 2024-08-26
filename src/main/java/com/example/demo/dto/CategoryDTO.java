@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 import com.example.demo.entity.Category;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
@@ -68,6 +69,7 @@ public class CategoryDTO {
 
     @Getter
     @Setter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Schema(description = "카테고리 데이터 응답")
     public static class Response {
 
@@ -82,6 +84,7 @@ public class CategoryDTO {
 
         @Schema(description = "하위 카테고리 list")
         private List<CategoryDTO.Response> children;
+
 
         public Response(Category entity) {
             this.name = entity.getName();
@@ -109,6 +112,7 @@ public class CategoryDTO {
                     .collect(Collectors.toList());
             return responseList;
         }
+
     }
 
 }

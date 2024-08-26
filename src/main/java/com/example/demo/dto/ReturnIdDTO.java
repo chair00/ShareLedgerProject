@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Schema(description = "생성/수정 시 id 리턴")
 public class ReturnIdDTO {
-    @Schema(description = "카테고리 id")
+    @Schema(description = "생성/수정 id")
     private Long id;
 
     public ReturnIdDTO(Category entity) {

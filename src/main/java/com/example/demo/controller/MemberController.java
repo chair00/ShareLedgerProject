@@ -49,22 +49,22 @@ public class MemberController {
     // 계정 정보 조회
     @Operation(summary = "계정 정보 조회", description = "사용자가 회원가입 때 기입한 정보를 조회한다.")
     @GetMapping("/member")
-    public ResponseEntity<?> showMemberInfo() {return ResponseEntity.ok().body(ApiResult.builder().message("계정정보조회").build());}
+    public ResponseEntity<?> showMemberInfo() {return ResponseEntity.ok(res);}
 
     // 계정 정보 수정
     @Operation(summary = "계정 정보 수정", description = "사용자가 회원가입 때 기입한 정보를 수정한다.")
     @PutMapping("/member")
-    public ResponseEntity<?> updateMemberInfo() {return ResponseEntity.ok().body(ApiResult.builder().message("계정정보수정").build());}
+    public ResponseEntity<?> updateMemberInfo() {return ResponseEntity.ok(res);}
 
     // 가계부 목록 조회
     @Operation(summary = "가계부 목록 조회", description = "사용자가 가입한 가계부 목록을 조회한다.")
     @GetMapping("/member/ledger-list")
-    public ResponseEntity<?> showLedgerList() {return ResponseEntity.ok().body(ApiResult.builder().message("가계부목록조회").build());}
+    public ResponseEntity<?> showLedgerList() {return ResponseEntity.ok(res);}
 
     // 프로필 등록
     @Operation(summary = "프로필 등록", description = "사용자가 프로필을 등록한다.")
     @PostMapping("/member/profile")
-    public ResponseEntity<?> createProfile() {return ResponseEntity.ok().body(ApiResult.builder().message("프로필 등록").build());}
+    public ResponseEntity<?> createProfile() {return ResponseEntity.ok(res);}
 
     // 프로필 조회
     @Operation(summary = "프로필 조회", description = "사용자가 등록한 프로필을 조회한다.")
