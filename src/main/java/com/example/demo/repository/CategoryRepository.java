@@ -9,5 +9,6 @@ import java.util.Optional;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findByParentId(Long parentId);
-    List<Category> findByLedgerIdAndParentIsNull(Long ledgerId);
+//    List<Category> findByLedgerIdAndParentIsNull(Long ledgerId);
+List<Category> findByLedgerId(Long ledgerId);
 }
