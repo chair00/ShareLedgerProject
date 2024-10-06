@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 import com.example.demo.entity.Category;
+import com.example.demo.entity.History;
 import com.example.demo.entity.Ledger;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -18,6 +19,10 @@ public class ReturnIdDTO {
     }
 
     public ReturnIdDTO(Ledger entity) {
+        this.id = entity.getId();
+    }
+
+    public ReturnIdDTO(History entity) {
         this.id = entity.getId();
     }
 

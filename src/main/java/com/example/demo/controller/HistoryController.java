@@ -1,8 +1,13 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.CategoryDTO;
+import com.example.demo.dto.HistoryDTO;
 import com.example.demo.dto.ResponseDTO;
+import com.example.demo.dto.ReturnIdDTO;
 import com.example.demo.response.ApiResult;
+import com.example.demo.service.HistoryService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,19 +16,26 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("")
 @RequiredArgsConstructor
 public class HistoryController {
+
+    private final HistoryService historyService;
+
     ResponseDTO res = new ResponseDTO("성공");
     // 내역 생성
     @Operation(summary = "내역 생성", description = "가계부에 내역을 생성한다.")
-    @PostMapping("/ledger/{ledger_id}/history")
-    public ResponseEntity<?> createHistory(){
-        return ResponseEntity.ok(res);
+    @PostMapping("/ledger/{ledgerId}/history")
+    public ResponseEntity<ReturnIdDTO> createHistory(@PathVariable Long ledgerId, @Valid @RequestBody HistoryDTO.Create historyReqDto){
+
+        ReturnIdDTO createdId = historyService.save(ledgerId, historyReqDto);
+        return ResponseEntity.ok(createdId);
     }
 
     // 내역 상세 조회
     @Operation(summary = "내역 상세 조회", description = "생성한 내역을 상세 조회한다.")
-    @GetMapping("/ledger/{ledger_id}/history/{history_id}")
-    public ResponseEntity<?> showHistory(){
-        return ResponseEntity.ok(res);
+    @GetMapping("/ledger/{ledgerId}/history/{historyId}")
+    public ResponseEntity<HistoryDTO.Response> getHistory(@PathVariable Long historyId){
+
+        HistoryDTO.Response history = historyService.find(historyId);
+        return ResponseEntity.ok(history);
     }
 
     // 내역 수정
