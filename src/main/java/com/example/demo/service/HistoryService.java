@@ -50,7 +50,12 @@ public class HistoryService {
     }
 
     // 내역 수정
-
+//    public ReturnIdDTO update(Long historyId, HistoryDTO.Update historyReqDto) {
+//
+//        History history = historyRepository.findById(historyId).orElseThrow(() -> new IllegalArgumentException("내역 id가 존재하지 않습니다."));
+//
+//        history.ss
+//    }
 
     // 내역 삭제
 

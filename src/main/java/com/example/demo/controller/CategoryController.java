@@ -64,7 +64,7 @@ public class CategoryController {
     // 카테고리 수정
     @Operation(summary = "카테고리 수정", description = "가계부 내 카테고리 정보를 수정한다.")
     @PutMapping("/{ledgerId}/category/{categoryId}")
-    public ResponseEntity<ReturnIdDTO> updateCategory(@PathVariable Long ledgerId, @PathVariable Long categoryId, @RequestBody CategoryDTO.Update categoryReqDto){
+    public ResponseEntity<ReturnIdDTO> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDTO.Update categoryReqDto){
         ReturnIdDTO updatedId = categoryService.update(categoryId, categoryReqDto);
         return ResponseEntity.ok(updatedId);
     }

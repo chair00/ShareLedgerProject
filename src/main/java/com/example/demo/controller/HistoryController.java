@@ -39,11 +39,13 @@ public class HistoryController {
     }
 
     // 내역 수정
-    @Operation(summary = "내역 수정", description = "생성한 내역을 수정한다.")
-    @PutMapping("/ledger/{ledger_id}/history/{history_id}")
-    public ResponseEntity<?> updateHistory(){
-        return ResponseEntity.ok(res);
-    }
+//    @Operation(summary = "내역 수정", description = "생성한 내역을 수정한다.")
+//    @PutMapping("/ledger/{ledgerId}/history/{historyId}")
+//    public ResponseEntity<ReturnIdDTO> updateHistory(@PathVariable Long historyId, @RequestBody HistoryDTO.Update historyReqDto){
+//
+//        ReturnIdDTO updatedId = historyService.update(historyId, historyReqDto);
+//        return ResponseEntity.ok(updatedId);
+//    }
 
     // 내역 삭제
     @Operation(summary = "내역 삭제", description = "생성한 내역을 삭제한다.")

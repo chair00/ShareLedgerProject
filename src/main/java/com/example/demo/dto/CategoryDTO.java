@@ -31,6 +31,7 @@ public class CategoryDTO {
                     .build();
         }
     }
+
     @Getter
     @Setter
     @Schema(description = "하위 카테고리 생성 요청")
