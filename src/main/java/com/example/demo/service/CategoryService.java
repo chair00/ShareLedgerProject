@@ -67,7 +67,7 @@ public class CategoryService {
         //return CategoryResDto.builder().name(category.getName()).type(category.getType()).parentCategoryId(parentId).children(children).build();
     }
 
-    // 카테고리 목록 가져오기 (서브 카테고리 제외)
+    // 카테고리 목록 가져오기 (서브 카테고리 포함)
     public List<CategoryDTO.Response> findAll(Long ledgerId) {
 //        return categoryRepository.findByLedgerIdAndParentIsNull(ledgerId).stream().map(CategoryResDto::new).collect(Collectors.toList());
 //        return CategoryDTO.Response.ResponseList(categoryRepository.findByLedgerIdAndParentIsNull(ledgerId));

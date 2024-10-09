@@ -107,7 +107,7 @@ public class CategoryDTO {
             this.children = children;
         }
 
-        @Schema(description = "상위 카테고리 목록 응답")
+        @Schema(description = "카테고리 목록 응답")
         public static List<Response> ResponseList(List<Category> categoryList) {
             List<Response> responseList = categoryList.stream()
                     .map(o->new Response(o))
