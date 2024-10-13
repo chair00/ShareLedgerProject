@@ -100,7 +100,7 @@ public class CategoryDTO {
         public Response(Category entity) {
             this.id = entity.getId();
             this.name = entity.getName();
-            this.type = entity.getType().getName();
+            this.type = entity.getType().toString();
 
             if (entity.getParent() != null){
                 this.parentCategoryId = entity.getParent().getId();
@@ -111,7 +111,7 @@ public class CategoryDTO {
         public Response(Category entity, List<CategoryDTO.Response> children) {
             this.id = entity.getId();
             this.name = entity.getName();
-            this.type = entity.getType().getName();
+            this.type = entity.getType().toString();
             this.children = children;
         }
 
