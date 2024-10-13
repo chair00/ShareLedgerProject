@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -21,7 +22,9 @@ public class History {
 
     private Long price;
 
-    private LocalDate date;
+    private LocalDateTime date;
+
+    private String memo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="ledgerId", nullable = false)
@@ -32,18 +35,13 @@ public class History {
     private Category category;
 
     @Builder
-    public History(String name, Long price, LocalDate date, Ledger ledger, Category category) {
+    public History(String name, Long price, LocalDateTime date, Ledger ledger, Category category, String memo) {
         this.name = name;
         this.price = price;
         this.date = date;
         this.ledger = ledger;
         this.category = category;
+        this.memo = memo;
     }
 
-    public void update(HistoryDTO.Request req) {
-        this.name = name;
-        this.price = price;
-        this.date = date;
-        this.category = category;
-    }
 }

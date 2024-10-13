@@ -34,7 +34,6 @@ public class CategoryController {
         // Long createCategoryId = categoryService.save(ledgerId, categoryReqDto);
         ReturnIdDTO createdId = categoryService.save(ledgerId, categoryReqDto);
         return ResponseEntity.ok(createdId);
-        //dto가 id를 반납하니까 dto에 id를 넣어야할까??? ㅈㄴ 고민되
     }
 
     // 서브 카테고리 추가
@@ -64,7 +63,7 @@ public class CategoryController {
     // 카테고리 수정
     @Operation(summary = "카테고리 수정", description = "가계부 내 카테고리 정보를 수정한다.")
     @PutMapping("/{ledgerId}/category/{categoryId}")
-    public ResponseEntity<ReturnIdDTO> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDTO.Update categoryReqDto){
+    public ResponseEntity<ReturnIdDTO> updateCategory(@PathVariable Long categoryId, @Valid @RequestBody CategoryDTO.Update categoryReqDto){
         ReturnIdDTO updatedId = categoryService.update(categoryId, categoryReqDto);
         return ResponseEntity.ok(updatedId);
     }

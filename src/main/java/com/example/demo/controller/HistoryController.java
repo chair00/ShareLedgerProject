@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -61,38 +63,27 @@ public class HistoryController {
     }
 
     // 내역 목록 조회(월간/일간)
-    @Operation(summary = "일간/월간 내역 목록 조회", description = "일간/월간 내역 목록을 조회한다.")
+    @Operation(summary = "일간/월간 내역 목록 조회", description = "일간/월간 내역 목록을 조회한다." +
+            "ex. \"/ledger/1/history?startDate=20240701&endDate=20240729\" 형식으로 요청")
     @GetMapping("/ledger/{ledgerId}/history")
-    public ResponseEntity<List<HistoryDTO.Response>> showHistoryList(@PathVariable Long ledgerId, @RequestParam(value = "year", required = true) String year,
-                                                                     @RequestParam(value = "month", required = true) String month, @RequestParam(value = "day", required = false, defaultValue = "-1") String day){
-        List<HistoryDTO.Response> historyList = historyService.findByDate1(ledgerId, year, month, day);
+    public ResponseEntity<List<HistoryDTO.Response>> showHistoryList(@PathVariable Long ledgerId,
+                                                                     @RequestParam("startDate") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,
+                                                                     @RequestParam("endDate") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate){
+        List<HistoryDTO.Response> historyList = historyService.findByDate(ledgerId, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
         return ResponseEntity.ok(historyList);
     }
 
-//    // 내역 목록 조회(월간)
-//    @Operation(summary = "월간 내역 목록 조회", description = "월간 내역 목록을 조회한다.")
-//    @GetMapping("/ledger/{ledgerId}/history")
-//    public ResponseEntity<List<HistoryDTO.Response>> showMonthHistoryList(@PathVariable Long ledgerId, int year, int month){
-//        List<HistoryDTO.Response> historyList = historyService.findByMonth(ledgerId, year, month);
-//        return ResponseEntity.ok(historyList);
-//    }
-//
-//    // 내역 목록 조회(일간)
-//    @Operation(summary = "일간 내역 목록 조회", description = "일간 내역 목록을 조회한다.")
-//    @GetMapping("/ledger/{ledgerId}/history")
-//    public ResponseEntity<List<HistoryDTO.Response>> showDateHistoryList(@PathVariable Long ledgerId, LocalDate date){
-//        List<HistoryDTO.Response> historyList = historyService.findByDate(ledgerId, date);
-//        return ResponseEntity.ok(historyList);
-//    }
-
     // 총 금액 조회
-    @Operation(summary = "총 금액 조회", description = "일간/월간/연간/사용자 지정 조건에 따라 총 금액을 조회한다.")
+    @Operation(summary = "총 금액 조회", description = "일간/월간/연간/사용자 지정 조건에 따라 총 금액(수입, 지출, 수입-지출)을 조회한다." +
+            "ex. \"/ledger/1/history?startDate=20240701&endDate=20240729\" 형식으로 요청")
     @GetMapping("/ledger/{ledgerId}/price")
-    public ResponseEntity<HistoryDTO.ResponseTotalPrice> showTotalPrice(@PathVariable Long ledgerId, @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate, @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate){
-        return ResponseEntity.ok(historyService.getPriceSumForDateRange(ledgerId, startDate, endDate));
+    public ResponseEntity<HistoryDTO.ResponseTotalPrice> showTotalPrice(@PathVariable Long ledgerId,
+                                                                        @RequestParam("startDate") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,
+                                                                        @RequestParam("endDate") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate){
+        return ResponseEntity.ok(historyService.getPriceSumForDateRange(ledgerId, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX)));
     }
 
-    //만들어야함
+    // 만들어야함 (통계 만들때)
 //    // 총 금액 목록 조회
 //    @Operation(summary = "총 금액 목록 조회", description = "일간/월간/카테고리 별 등 조건에 따라 목록을 조회한다.")
 //    @GetMapping("/ledger/{ledgerId}/prices")

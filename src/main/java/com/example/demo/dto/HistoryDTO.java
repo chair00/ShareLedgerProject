@@ -2,13 +2,17 @@ package com.example.demo.dto;
 
 import com.example.demo.entity.Category;
 import com.example.demo.entity.History;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,22 +27,30 @@ public class HistoryDTO {
         private String name;
 
         @Schema(description = "가격")
-        @NotBlank(message = "가격을 입력해야합니다.")
+        @NotNull(message = "가격을 입력해야합니다.")
         private Long price;
 
         @Schema(description = "날짜")
-        @NotBlank(message = "날짜를 입력해야합니다.")
-        private LocalDate date;
+        @NotNull(message = "날짜를 입력해야합니다.")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMddHHmm", timezone = "Asia/Seoul")
+        private LocalDateTime date;
 
         @Schema(description = "카테고리")
-        @NotBlank(message = "카테고리를 선택해야합니다.")
+        @NotNull(message = "카테고리를 선택해야합니다.")
         private Long categoryId;
 
+        @Schema(description = "메모")
+        private String memo;
+
         public History toEntity() {
+//            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+//            LocalDateTime strToLocalDateTime = LocalDateTime.parse(date, format);
+
             return History.builder()
                     .name(name)
                     .price(price)
                     .date(date)
+                    .memo(memo)
                     .build();
         }
     }
@@ -59,10 +71,16 @@ public class HistoryDTO {
         private Long price;
 
         @Schema(description = "날짜")
-        private LocalDate date;
+        private LocalDateTime date;
 
         @Schema(description = "카테고리")
         private String category;
+
+        @Schema(description = "부모 카테고리")
+        private String parentCategory;
+
+        @Schema(description = "메모")
+        private String memo;
 
         @Schema(description = "가계부 id")
         private Long ledgerId;
@@ -74,6 +92,12 @@ public class HistoryDTO {
             this.price = entity.getPrice();
             this.date = entity.getDate();
             this.category = entity.getCategory().getName();
+
+            if (entity.getCategory().getParent() != null){
+                this.parentCategory = entity.getCategory().getParent().getName();
+            }
+
+            this.memo = entity.getMemo();
             this.ledgerId = entity.getLedger().getId();
         }
 
@@ -92,11 +116,20 @@ public class HistoryDTO {
     @Setter
     @Schema(description = "총금액 응답")
     public static class ResponseTotalPrice {
-        @Schema(description = "총 금액")
-        private Long price;
 
-        public ResponseTotalPrice(Long price) {
-            this.price = price;
+        @Schema(description = "수입 총 금액")
+        private Long totalInPrice;
+
+        @Schema(description = "지출 총 금액")
+        private Long totalOutPrice;
+
+        @Schema(description = "수입-지출 총 금액")
+        private Long totalPrice;
+
+        public ResponseTotalPrice(Long totalInPrice, Long totalOutPrice, Long totalPrice) {
+            this.totalInPrice = totalInPrice;
+            this.totalOutPrice = totalOutPrice;
+            this.totalPrice = totalPrice;
         }
     }
 }

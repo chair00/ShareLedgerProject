@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.example.demo.dto.CategoryDTO;
+import com.example.demo.enums.CategoryType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -19,7 +20,8 @@ public class Category {
 
     private String name;
 
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private CategoryType type;
 
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name="ledgerId", nullable = false)
@@ -33,7 +35,7 @@ public class Category {
     private List<Category> child = new ArrayList<>();
 
     @Builder
-    public Category(String name, String type, Ledger ledger, Category parent) {
+    public Category(String name, CategoryType type, Ledger ledger, Category parent) {
         this.name = name;
         this.type = type;
         this.ledger = ledger;

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,38 +78,19 @@ public class HistoryService {
     }
 
     // 내역 목록 조회 (일간 / 월간)
-    public List<HistoryDTO.Response> findByDate1 (Long ledgerId, String year, String month, String day) {
+    public List<HistoryDTO.Response> findByDate (Long ledgerId, LocalDateTime startDate, LocalDateTime endDate) {
 
-        if (day.equals("-1")) {
-
-            LocalDate startOfMonth = LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), 1); // 해당 월의 첫 번째 날
-            LocalDate endOfMonth = startOfMonth.withDayOfMonth(startOfMonth.lengthOfMonth()); // 해당 월의 마지막 날
-
-            return HistoryDTO.Response.ResponseList(historyRepository.findByLedgerIdAndDateBetween(ledgerId, startOfMonth, endOfMonth));
-        }
-
-        LocalDate date = LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
-        return HistoryDTO.Response.ResponseList(historyRepository.findByLedgerIdAndDate(ledgerId, date));
+        return HistoryDTO.Response.ResponseList(historyRepository.findByLedgerIdAndDateBetween(ledgerId, startDate, endDate));
     }
 
-//    // 내역 목록 조회 (월간)
-//    public List<HistoryDTO.Response> findByMonth(Long ledgerId, int year, int month) {
-//
-//        LocalDate startOfMonth = LocalDate.of(year, month, 1); // 해당 월의 첫 번째 날
-//        LocalDate endOfMonth = startOfMonth.withDayOfMonth(startOfMonth.lengthOfMonth()); // 해당 월의 마지막 날
-//
-//        return HistoryDTO.Response.ResponseList(historyRepository.findByLedgerIdAndDateBetween(ledgerId, startOfMonth, endOfMonth));
-//    }
-//
-//    // 내역 목록 조회 (월간)
-//    public List<HistoryDTO.Response> findByDate(Long ledgerId, LocalDate date) {
-//        return HistoryDTO.Response.ResponseList(historyRepository.findByLedgerIdAndDate(ledgerId, date));
-//    }
-
     // 총 금액 조회
-    public HistoryDTO.ResponseTotalPrice getPriceSumForDateRange(Long ledgerId, LocalDate startDate, LocalDate endDate) {
+    public HistoryDTO.ResponseTotalPrice getPriceSumForDateRange(Long ledgerId, LocalDateTime startDate, LocalDateTime endDate) {
 
-        return new HistoryDTO.ResponseTotalPrice(historyRepository.findSumOfPriceBetween(ledgerId, startDate, endDate));
+        Long totalInPrice = historyRepository.findSumOfIncomePriceBetween(ledgerId, startDate, endDate);
+        Long totalOutPrice = historyRepository.findSumOfOutcomePriceBetween(ledgerId, startDate, endDate);
+        Long totalPrice = totalInPrice - totalOutPrice;
+
+        return new HistoryDTO.ResponseTotalPrice(totalInPrice, totalOutPrice, totalPrice);
     }
 
     //만들어야함

@@ -1,6 +1,8 @@
 package com.example.demo.dto;
 
 import com.example.demo.entity.Category;
+import com.example.demo.enums.CategoryType;
+import com.example.demo.enums.EnumValue;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -21,13 +23,16 @@ public class CategoryDTO {
         private String name;
 
         @Schema(description = "수입/지출")
+        @EnumValue(enumClass = CategoryType.class, message = "카테고리 타입 유형이 잘못되었습니다.", ignoreCase = true)
         @NotBlank(message = "카테고리 타입을 선택해야합니다.")
         private String type;
 
         public Category toEntity() {
+            CategoryType categoryType = CategoryType.valueOf(type);
+
             return Category.builder()
                     .name(name)
-                    .type(type)
+                    .type(categoryType)
                     .build();
         }
     }
@@ -56,12 +61,15 @@ public class CategoryDTO {
         private String name;
 
         @Schema(description = "수입/지출")
+        @EnumValue(enumClass = CategoryType.class, message = "카테고리 타입 유형이 잘못되었습니다.", ignoreCase = true)
         private String type;
 
         public Category toEntity() {
+            CategoryType categoryType = CategoryType.valueOf(type);
+
             return Category.builder()
                     .name(name)
-                    .type(type)
+                    .type(categoryType)
                     .build();
         }
 
@@ -92,7 +100,7 @@ public class CategoryDTO {
         public Response(Category entity) {
             this.id = entity.getId();
             this.name = entity.getName();
-            this.type = entity.getType();
+            this.type = entity.getType().getName();
 
             if (entity.getParent() != null){
                 this.parentCategoryId = entity.getParent().getId();
@@ -103,7 +111,7 @@ public class CategoryDTO {
         public Response(Category entity, List<CategoryDTO.Response> children) {
             this.id = entity.getId();
             this.name = entity.getName();
-            this.type = entity.getType();
+            this.type = entity.getType().getName();
             this.children = children;
         }
 

@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.*;
 import com.example.demo.entity.Category;
 import com.example.demo.entity.Ledger;
+import com.example.demo.enums.CategoryType;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.LedgerRepository;
 import lombok.RequiredArgsConstructor;
@@ -79,7 +80,7 @@ public class CategoryService {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new IllegalArgumentException("카테고리 id가 존재하지 않습니다."));
 
         category.setName(categoryReqDto.getName());
-        category.setType(categoryReqDto.getType());
+        category.setType(CategoryType.valueOf(categoryReqDto.getType()));
 
         return new ReturnIdDTO(category);
     }
