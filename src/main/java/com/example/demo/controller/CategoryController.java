@@ -28,7 +28,8 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     // 카테고리 추가
-    @Operation(summary = "카테고리 추가", description = "가계부 내 상위 카테고리를 생성한다.")
+    @Operation(summary = "카테고리 추가", description = "가계부 내 상위 카테고리를 생성한다." +
+            "type은 IN/OUT 으로 제한(대소문자 유의)")
     @PostMapping("/{ledgerId}/category")
     public ResponseEntity<ReturnIdDTO> createCategory(@PathVariable Long ledgerId, @Valid @RequestBody CategoryDTO.Create categoryReqDto){
         // Long createCategoryId = categoryService.save(ledgerId, categoryReqDto);

@@ -7,6 +7,7 @@ import com.example.demo.dto.ReturnIdDTO;
 import com.example.demo.response.ApiResult;
 import com.example.demo.service.HistoryService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,13 +22,16 @@ import java.util.List;
 @RestController
 @RequestMapping("")
 @RequiredArgsConstructor
+
+@Tag(name = "내역", description = "내역 API")
 public class HistoryController {
 
     private final HistoryService historyService;
 
     ResponseDTO res = new ResponseDTO("성공");
     // 내역 생성
-    @Operation(summary = "내역 생성", description = "가계부에 내역을 생성한다.")
+    @Operation(summary = "내역 생성", description = "가계부에 내역을 생성한다." +
+            "date 형식은 yyyyMMddHHmm (문자열)")
     @PostMapping("/ledger/{ledgerId}/history")
     public ResponseEntity<ReturnIdDTO> createHistory(@PathVariable Long ledgerId, @Valid @RequestBody HistoryDTO.Request historyReqDto){
 
