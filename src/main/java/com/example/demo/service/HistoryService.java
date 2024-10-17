@@ -93,6 +93,11 @@ public class HistoryService {
         return new HistoryDTO.ResponseTotalPrice(totalInPrice, totalOutPrice, totalPrice);
     }
 
+    public List<HistoryDTO.Response> findByCategories(Long ledgerId, List<Long> categories) {
+
+        return HistoryDTO.Response.ResponseList(historyRepository.findByCategories(ledgerId, categories));
+    }
+
     //만들어야함
 //    // 총 금액 목록 조회
 //    public HistoryDTO.Response getHistoryListForCondition(Long ledgerId, LocalDate startDate, LocalDate endDate) {

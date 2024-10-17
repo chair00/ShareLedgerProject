@@ -4,6 +4,7 @@ import com.example.demo.dto.CategoryDTO;
 import com.example.demo.dto.HistoryDTO;
 import com.example.demo.dto.ResponseDTO;
 import com.example.demo.dto.ReturnIdDTO;
+import com.example.demo.entity.History;
 import com.example.demo.response.ApiResult;
 import com.example.demo.service.HistoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -85,6 +86,13 @@ public class HistoryController {
                                                                         @RequestParam("startDate") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,
                                                                         @RequestParam("endDate") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate){
         return ResponseEntity.ok(historyService.getPriceSumForDateRange(ledgerId, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX)));
+    }
+
+    // 카테고리별 검색 기능 (카테고리 id로 검색)
+    @GetMapping("/ledger/{ledgerId}/serch")
+    public ResponseEntity<List<HistoryDTO.Response>> searchByCategories (@PathVariable Long ledgerId, @RequestParam List<Long> categories) {
+
+        return ResponseEntity.ok(historyService.findByCategories(ledgerId, categories));
     }
 
     // 만들어야함 (통계 만들때)
