@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.LedgerDto;
+import com.example.demo.dto.LedgerDTO;
 import com.example.demo.dto.ReturnIdDTO;
 import com.example.demo.response.ApiResult;
 import com.example.demo.service.LedgerService;
@@ -24,7 +24,7 @@ public class LedgerController {
     // 가계부 생성
     @Operation(summary = "가계부 생성", description = "새로운 가계부를 생성한다. 생성한 사용자는 그 가계부의 관리자가 된다.")
     @PostMapping("")
-    public ResponseEntity<ReturnIdDTO> createLedger(@RequestBody LedgerDto ledgerDto){
+    public ResponseEntity<ReturnIdDTO> createLedger(@RequestBody LedgerDTO ledgerDto){
         ReturnIdDTO createdId = ledgerService.createLedger(ledgerDto);
         return ResponseEntity.created(URI.create("/ledger/" + createdId)).body(createdId);
     }
@@ -32,15 +32,15 @@ public class LedgerController {
     // 가계부 정보 조회
     @Operation(summary = "가계부 정보 조회", description = "가계부 정보를 조회한다.")
     @GetMapping("/{ledgerId}")
-    public ResponseEntity<?> getLedger(@PathVariable Long ledgerId){
-        LedgerDto ledger = ledgerService.getLedger(ledgerId);
-        return ResponseEntity.ok(ApiResult.builder().data(ledger).build());
+    public ResponseEntity<LedgerDTO> getLedger(@PathVariable Long ledgerId){
+        LedgerDTO ledger = ledgerService.getLedger(ledgerId);
+        return ResponseEntity.ok(ledger);
     }
 
     // 가계부 정보 수정
     @Operation(summary = "가계부 정보 수정", description = "가계부 정보를 수정한다.")
     @PutMapping("/{ledgerId}")
-    public ResponseEntity<ReturnIdDTO> updateLedger(@PathVariable Long ledgerId, @RequestBody LedgerDto ledgerDto){
+    public ResponseEntity<ReturnIdDTO> updateLedger(@PathVariable Long ledgerId, @RequestBody LedgerDTO ledgerDto){
         ReturnIdDTO updatedId = ledgerService.updateLedger(ledgerId, ledgerDto);
         return ResponseEntity.ok(updatedId);
     }

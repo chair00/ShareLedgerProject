@@ -9,13 +9,13 @@ import lombok.*;
 @NoArgsConstructor
 
 @Schema(description = "가계부 응답/요청 DTO")
-public class LedgerDto {
+public class LedgerDTO {
 
     @Schema(description = "가계부 이름")
     private String ledgerName;
 
     @Builder
-    public LedgerDto(Ledger ledger) {
+    public LedgerDTO(Ledger ledger) {
         this.ledgerName = ledger.getLedgerName();
     }
 

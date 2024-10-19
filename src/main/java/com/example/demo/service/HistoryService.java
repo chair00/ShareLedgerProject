@@ -10,8 +10,10 @@ import com.example.demo.entity.Ledger;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.HistoryRepository;
 import com.example.demo.repository.LedgerRepository;
+import com.example.demo.specification.HistorySpecification;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,11 +79,11 @@ public class HistoryService {
         historyRepository.deleteById(history.getId());
     }
 
-    // 내역 목록 조회 (일간 / 월간)
-    public List<HistoryDTO.Response> findByDate (Long ledgerId, LocalDateTime startDate, LocalDateTime endDate) {
-
-        return HistoryDTO.Response.ResponseList(historyRepository.findByLedgerIdAndDateBetween(ledgerId, startDate, endDate));
-    }
+//    // 내역 목록 조회 (일간 / 월간)
+//    public List<HistoryDTO.Response> findByDate (Long ledgerId, LocalDateTime startDate, LocalDateTime endDate) {
+//
+//        return HistoryDTO.Response.ResponseList(historyRepository.findByLedgerIdAndDateBetween(ledgerId, startDate, endDate));
+//    }
 
     // 총 금액 조회
     public HistoryDTO.ResponseTotalPrice getPriceSumForDateRange(Long ledgerId, LocalDateTime startDate, LocalDateTime endDate) {
@@ -93,9 +95,18 @@ public class HistoryService {
         return new HistoryDTO.ResponseTotalPrice(totalInPrice, totalOutPrice, totalPrice);
     }
 
-    public List<HistoryDTO.Response> findByCategories(Long ledgerId, List<Long> categories) {
+//    public List<HistoryDTO.Response> findByCategories(Long ledgerId, List<Long> categories) {
+//
+//        return HistoryDTO.Response.ResponseList(historyRepository.findByCategories(ledgerId, categories));
+//    }
 
-        return HistoryDTO.Response.ResponseList(historyRepository.findByCategories(ledgerId, categories));
+    public List<HistoryDTO.Response> findByConditions(Long ledgerId, List<Long> categories, LocalDateTime startDate, LocalDateTime endDate) {
+        Specification<History> specification = Specification
+                .where(HistorySpecification.hasLedgerId(ledgerId))
+                .and(HistorySpecification.hasCategories(categories))
+                .and(HistorySpecification.hasDateBetween(startDate, endDate));
+
+        return HistoryDTO.Response.ResponseList(historyRepository.findAll(specification));
     }
 
     //만들어야함

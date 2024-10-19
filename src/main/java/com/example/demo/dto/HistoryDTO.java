@@ -76,6 +76,9 @@ public class HistoryDTO {
         @Schema(description = "카테고리")
         private String category;
 
+        @Schema(description = "카테고리 타입(IN/OUT)")
+        private String categoryType;
+
         @Schema(description = "부모 카테고리")
         private String parentCategory;
 
@@ -92,6 +95,7 @@ public class HistoryDTO {
             this.price = entity.getPrice();
             this.date = entity.getDate();
             this.category = entity.getCategory().getName();
+            this.categoryType = entity.getCategory().getType().toString();
 
             if (entity.getCategory().getParent() != null){
                 this.parentCategory = entity.getCategory().getParent().getName();

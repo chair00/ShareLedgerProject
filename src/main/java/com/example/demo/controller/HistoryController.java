@@ -67,16 +67,16 @@ public class HistoryController {
         return ResponseEntity.ok(new ReturnIdDTO(historyId));
     }
 
-    // 내역 목록 조회(월간/일간)
-    @Operation(summary = "일간/월간 내역 목록 조회", description = "일간/월간 내역 목록을 조회한다." +
-            "ex. \"/ledger/1/history?startDate=20240701&endDate=20240729\" 형식으로 요청")
-    @GetMapping("/ledger/{ledgerId}/history")
-    public ResponseEntity<List<HistoryDTO.Response>> showHistoryList(@PathVariable Long ledgerId,
-                                                                     @RequestParam("startDate") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,
-                                                                     @RequestParam("endDate") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate){
-        List<HistoryDTO.Response> historyList = historyService.findByDate(ledgerId, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
-        return ResponseEntity.ok(historyList);
-    }
+//    // 내역 목록 조회(월간/일간)
+//    @Operation(summary = "일간/월간 내역 목록 조회", description = "일간/월간 내역 목록을 조회한다." +
+//            "ex. \"/ledger/1/history?startDate=20240701&endDate=20240729\" 형식으로 요청")
+//    @GetMapping("/ledger/{ledgerId}/history")
+//    public ResponseEntity<List<HistoryDTO.Response>> showHistoryList(@PathVariable Long ledgerId,
+//                                                                     @RequestParam("startDate") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,
+//                                                                     @RequestParam("endDate") @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate){
+//        List<HistoryDTO.Response> historyList = historyService.findByDate(ledgerId, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
+//        return ResponseEntity.ok(historyList);
+//    }
 
     // 총 금액 조회
     @Operation(summary = "총 금액 조회", description = "일간/월간/연간/사용자 지정 조건에 따라 총 금액(수입, 지출, 수입-지출)을 조회한다." +
@@ -89,10 +89,18 @@ public class HistoryController {
     }
 
     // 카테고리별 검색 기능 (카테고리 id로 검색)
-    @GetMapping("/ledger/{ledgerId}/serch")
-    public ResponseEntity<List<HistoryDTO.Response>> searchByCategories (@PathVariable Long ledgerId, @RequestParam List<Long> categories) {
+    @Operation(summary = "내역 목록 조회(시작날짜, 끝날짜, 카테고리 조건 설정 가능)", description = "일간/월간/연간/사용자 설정 기간/카테고리 지정 조건에 따라 내역 목록을 조회한다." +
+            "ex. \"/ledger/1/search?categories=5&categories=6&startDate=20240706&endDate=20240731\" 형식으로 요청")
+    @GetMapping("/ledger/{ledgerId}/search")
+    public ResponseEntity<List<HistoryDTO.Response>> searchByConditions (@PathVariable Long ledgerId,
+                                                                         @RequestParam(required = false) List<Long> categories,
+                                                                         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,
+                                                                         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate) {
 
-        return ResponseEntity.ok(historyService.findByCategories(ledgerId, categories));
+        LocalDateTime startDateTime = (startDate != null) ? startDate.atStartOfDay() : null;
+        LocalDateTime endDateTime = (endDate != null) ? endDate.atTime(LocalTime.MAX) : null;
+
+        return ResponseEntity.ok(historyService.findByConditions(ledgerId, categories, startDateTime, endDateTime));
     }
 
     // 만들어야함 (통계 만들때)
