@@ -72,6 +72,7 @@ public class HistoryService {
     }
 
     // 내역 삭제
+    @Transactional
     public void delete(Long historyId) {
 
         History history = historyRepository.findById(historyId).orElseThrow(() -> new IllegalArgumentException("내역 id가 존재하지 않습니다."));

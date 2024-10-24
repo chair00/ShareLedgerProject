@@ -16,11 +16,11 @@ public interface HistoryRepository extends JpaRepository<History, Long>, JpaSpec
 //    List<History> findByLedgerIdAndDateBetween(Long ledgerId, LocalDateTime startDate, LocalDateTime endDate);
 
     // 일간/월간/연간/사용자 지정 총 수입 금액 조회
-    @Query("SELECT SUM(e.price) FROM History e WHERE e.ledger.id = :ledgerId AND e.date BETWEEN :startDate AND :endDate AND e.category.type ='IN'")
+    @Query("SELECT COALESCE(SUM(e.price), 0) FROM History e WHERE e.ledger.id = :ledgerId AND e.date BETWEEN :startDate AND :endDate AND e.category.type ='IN'")
     Long findSumOfIncomePriceBetween(@Param("ledgerId") Long ledgerId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
     // 일간/월간/연간/사용자 지정 총 지출 금액 조회
-    @Query("SELECT SUM(e.price) FROM History e WHERE e.ledger.id = :ledgerId AND e.date BETWEEN :startDate AND :endDate AND e.category.type ='OUT'")
+    @Query("SELECT COALESCE(SUM(e.price), 0) FROM History e WHERE e.ledger.id = :ledgerId AND e.date BETWEEN :startDate AND :endDate AND e.category.type ='OUT'")
     Long findSumOfOutcomePriceBetween(@Param("ledgerId") Long ledgerId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
 //    // 카테고리 다중 검색

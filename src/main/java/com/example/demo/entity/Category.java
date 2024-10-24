@@ -34,6 +34,9 @@ public class Category {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> child = new ArrayList<>();
 
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<History> historyList;
+
     @Builder
     public Category(String name, CategoryType type, Ledger ledger, Category parent) {
         this.name = name;
