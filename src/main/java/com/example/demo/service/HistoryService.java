@@ -64,6 +64,7 @@ public class HistoryService {
         history.setName(historyReqDto.getName());
         history.setDate(historyReqDto.getDate());
         history.setPrice(historyReqDto.getPrice());
+        history.setMemo(historyReqDto.getMemo());
 
         Category category = categoryRepository.findById(historyReqDto.getCategoryId()).orElseThrow(() -> new IllegalArgumentException("카테고리 id가 존재하지 않습니다"));
         history.setCategory(category);

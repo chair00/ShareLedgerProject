@@ -31,10 +31,10 @@ public class Category {
     @JoinColumn(name = "parentCategoryId")
     private Category parent;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "parent") //, cascade = CascadeType.ALL, orphanRemoval = true
     private List<Category> child = new ArrayList<>();
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "category") //, cascade = CascadeType.ALL, orphanRemoval = true
     private List<History> historyList;
 
     @Builder

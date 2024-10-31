@@ -2,9 +2,12 @@ package com.example.demo.service;
 
 import com.example.demo.dto.*;
 import com.example.demo.entity.Category;
+import com.example.demo.entity.History;
 import com.example.demo.entity.Ledger;
+import com.example.demo.enums.CategoryConstants;
 import com.example.demo.enums.CategoryType;
 import com.example.demo.repository.CategoryRepository;
+import com.example.demo.repository.HistoryRepository;
 import com.example.demo.repository.LedgerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import java.util.stream.Collectors;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final LedgerRepository ledgerRepository;
+    private final HistoryRepository historyRepository;
 
 
     // 카테고리 생성
@@ -85,9 +89,27 @@ public class CategoryService {
         return new ReturnIdDTO(category);
     }
 
+    @Transactional
     public void delete(Long categoryId) {
 
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new IllegalArgumentException("카테고리 id가 존재하지 않습니다."));
+
+
+
+        Category uncategorized = null;
+        if (category.getType() == CategoryType.IN) {
+            uncategorized = categoryRepository.findById(CategoryConstants.UNCATEGORIZED_IN_ID).orElseThrow(() -> new IllegalArgumentException("카테고리 id가 존재하지 않습니다."));
+        } else if(category.getType() == CategoryType.OUT) {
+            uncategorized = categoryRepository.findById(CategoryConstants.UNCATEGORIZED_OUT_ID).orElseThrow(() -> new IllegalArgumentException("카테고리 id가 존재하지 않습니다."));
+        }
+
+
+        List<History> histories = category.getHistoryList();
+        for (History history : histories) {
+            history.setCategory(uncategorized);
+            System.out.println("내역: " + history.getId() + " " +history.getCategory().getId());
+            historyRepository.save(history);
+        }
 
         categoryRepository.deleteById(category.getId());
     }
