@@ -17,6 +17,8 @@ spring:
     console:
       enabled: true
       path: /h2
+  jwt:
+    secret: vmfhaltmskdlstkfkdgodyroqkfwkdbalroqkfwkdbalaaaaaaaaaaaaaaaabbbbb
 # 로그인 구현에 필요한 애들
 #  security:
 #    oauth2:

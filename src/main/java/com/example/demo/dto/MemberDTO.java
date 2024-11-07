@@ -5,9 +5,15 @@ import com.example.demo.entity.MemberRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+@Schema(description = "회원 정보")
 public class MemberDTO {
 
+    @Getter
+    @Setter
     @Schema(description = "회원가입 요청")
     public static class SignUp {
         @Schema(description = "이메일(로그인 id)")
@@ -25,15 +31,14 @@ public class MemberDTO {
         @NotBlank(message = "이름을 입력하세요.")
         private String name;
 
-        public Member toEntity() {
-            return Member.builder()
-                    .email(email)
-                    .password(password)
-                    .name(name)
-                    .role(MemberRole.USER)
-                    .build();
-        }
-
+//        public Member toEntity() {
+//            return Member.builder()
+//                    .email(email)
+//                    .password(password)
+//                    .name(name)
+//                    .role("ROLE_USER")
+//                    .build();
+//        }
     }
 
     @Schema(description = "로그인 요청")

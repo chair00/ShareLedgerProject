@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.dto.MemberDTO;
 import com.example.demo.dto.ResponseDTO;
+import com.example.demo.dto.ReturnIdDTO;
 import com.example.demo.response.ApiResult;
+import com.example.demo.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -16,19 +19,24 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "계정", description = "계정 API")
 public class MemberController {
 
+    private final MemberService memberService;
+
     ResponseDTO res = new ResponseDTO("성공");
 
     // 회원가입
     @Operation(summary = "회원가입", description = "사용자가 계정을 생성한다.")
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(){
-        return ResponseEntity.ok(res);
+    public ResponseEntity<ReturnIdDTO> signup(@RequestBody MemberDTO.SignUp req){
+
+        ReturnIdDTO memberId = memberService.signUp(req);
+        return ResponseEntity.ok(memberId);
     }
 
     // 로그인
-    @Operation(summary = "로그인", description = "사용자가 생성된 계정으로 로그인한다.")
+    @Operation(summary = "로그인", description = "사용자가 생성된 계정으로 로그인한다." +
+            "email과 password를 json 형식으로 입력하면 로그인이 됨." + "응답 헤더에 토큰 반환(Authorization 필드 확인)")
     @PostMapping("/login")
-    public ResponseEntity<?> login(){
+    public ResponseEntity<?> login(@RequestBody MemberDTO.Login req){
         return ResponseEntity.ok(res);
     }
 

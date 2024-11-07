@@ -8,7 +8,8 @@ import lombok.*;
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+        //(access = AccessLevel.PROTECTED)
 public class Member {
     @Id
     @Column(name = "id", nullable = false)
@@ -20,7 +21,7 @@ public class Member {
     private String password;
     private String nickname;
 
-    private MemberRole role; // 공유 가계부 전체 시스템에 대한 권한 분류(관리자 계정은 하나, 나머지는 전부 사용자)
+    private String role; // 공유 가계부 전체 시스템에 대한 권한 분류(관리자 계정은 하나, 나머지는 전부 사용자)
     // 이미지
     // 생성일
     // 수정일
