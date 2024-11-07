@@ -80,7 +80,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
-                        .requestMatchers("/login", "/", "/signup", "/h2-console/**", "/token").permitAll()
+                        .requestMatchers("/login", "/", "/signup", "/h2-console/**", "/token", "/swagger-ui/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
