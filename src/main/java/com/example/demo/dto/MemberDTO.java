@@ -25,6 +25,7 @@ public class MemberDTO {
         @NotBlank(message = "비밀번호를 입력하세요.")
         private String password;
         @Schema(description = "비밀번호 확인")
+        @NotBlank(message = "비밀번호를 재입력하세요.")
         public String passwordCheck;
 
         @Schema(description = "사용자 이름")

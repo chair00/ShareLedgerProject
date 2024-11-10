@@ -26,8 +26,11 @@ public class MemberController {
     // 회원가입
     @Operation(summary = "회원가입", description = "사용자가 계정을 생성한다.")
     @PostMapping("/signup")
-    public ResponseEntity<ReturnIdDTO> signup(@RequestBody MemberDTO.SignUp req){
+    public ResponseEntity<ReturnIdDTO> signup(@RequestBody MemberDTO.SignUp req) throws Exception{
 
+        if (!req.getPassword().equals(req.passwordCheck)) {
+            throw new Exception("비밀번호가 일치하지 않습니다.");
+        }
         ReturnIdDTO memberId = memberService.signUp(req);
         return ResponseEntity.ok(memberId);
     }
