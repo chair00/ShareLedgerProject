@@ -40,7 +40,7 @@ public class MemberController {
             " / email과 password를 json 형식으로 입력하면 로그인이 됨."
             + " / 응답 헤더에 토큰 반환(Authorization 필드 확인)"
             + " / swagger에서는 동작 안함.(에러뜸) 직접 앱/웹에서 테스트해야함")
-    @PostMapping("/login")
+//    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody MemberDTO.Login req){
         return ResponseEntity.ok(res);
     }

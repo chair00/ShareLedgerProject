@@ -58,7 +58,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     // 로그인 성공시 실행하는 메소드(jwt 발급)
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
 
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
@@ -73,6 +73,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String token = jwtUtil.createJwt(username, role, 60*60*60L);
 
         response.addHeader("Authorization", "Bearer " + token);
+
+        // 응답 본문(JSON) 추가
+        String jsonResponse = String.format(
+                "{ \"message\": \"Login successful\", \"token\": \"%s\", \"username\": \"%s\", \"role\": \"%s\" }",
+                token, username, role
+        );
+
+        response.getWriter().write(jsonResponse);
     }
 
     // 로그인 실패시 실행하는 메소드
