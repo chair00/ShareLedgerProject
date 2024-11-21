@@ -74,6 +74,7 @@ public class MemberService {
             member.setRole("ROLE_USER");
 
             memberRepository.save(member);
+            // e
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
