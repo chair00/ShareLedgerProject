@@ -1,7 +1,5 @@
 package com.example.demo.dto;
 
-import com.example.demo.entity.Member;
-import com.example.demo.entity.MemberRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -40,6 +38,22 @@ public class MemberDTO {
 //                    .role("ROLE_USER")
 //                    .build();
 //        }
+    }
+
+    @Schema(description = "OAuth2 회원가입")
+    @Getter
+    @Setter
+    public static class OAuth2Login {
+        @Schema(description = "username = provider + \" \" + providerId -> 사용자 식별 시 사용")
+        private String username;
+        @Schema(description = "이메일")
+        private String email;
+        @Schema(description = "이름")
+        private String name;
+        @Schema(description = "권한")
+        private String role;
+        @Schema(description = "provider / ex. naver, google, kakao")
+        private String provider;
     }
 
     @Schema(description = "로그인 요청")

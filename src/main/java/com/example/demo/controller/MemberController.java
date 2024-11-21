@@ -4,7 +4,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.MemberDTO;
 import com.example.demo.dto.ResponseDTO;
 import com.example.demo.dto.ReturnIdDTO;
-import com.example.demo.response.ApiResult;
+import com.example.demo.dto.TokenDTO;
 import com.example.demo.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,12 +35,22 @@ public class MemberController {
         return ResponseEntity.ok(memberId);
     }
 
+    // 모바일 OAuth2 회원가입
+    @Operation(summary = "모바일 OAuth2 회원가입", description = "(모바일)기존에 가입된 소셜 로그인 계정을 통해 사용자가 계정을 생성한다.")
+    @PostMapping("/oauth2/signup")
+    public ResponseEntity<TokenDTO> oauth2Login(@RequestBody MemberDTO.OAuth2Login req) throws Exception{
+
+        TokenDTO token = memberService.oauth2Login(req);
+        return ResponseEntity.ok(token);
+    }
+
     // 로그인
+    // 현재 동작 안하는 controller (security 에서 알아서 동작시킴)
     @Operation(summary = "로그인", description = "사용자가 생성된 계정으로 로그인한다." +
             " / email과 password를 json 형식으로 입력하면 로그인이 됨."
             + " / 응답 헤더에 토큰 반환(Authorization 필드 확인)"
             + " / swagger에서는 동작 안함.(에러뜸) 직접 앱/웹에서 테스트해야함")
-//    @PostMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody MemberDTO.Login req){
         return ResponseEntity.ok(res);
     }

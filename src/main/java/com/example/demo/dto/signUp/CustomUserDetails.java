@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.signUp;
 
 import com.example.demo.entity.Member;
 import org.springframework.security.core.GrantedAuthority;

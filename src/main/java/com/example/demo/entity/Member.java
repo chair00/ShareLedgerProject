@@ -16,6 +16,11 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 사용자는 사용x
 
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    private String provider; // 소셜 제공자 (ex. google, facebook)
+
     private String email; // 로그인 시 사용하는 id
     private String name;
     private String password;

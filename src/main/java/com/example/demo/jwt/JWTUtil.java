@@ -25,6 +25,10 @@ public class JWTUtil {
         // secretKey로 해당 서버에서 발급한 토큰이 맞는지 검증 후 username을 리턴.
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("email", String.class);
     }
+    // 있어야하는지 모르겠음
+    public String getUsername(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
+    }
 
     public String getRole(String token) {
 

@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.CustomUserDetails;
+import com.example.demo.dto.signUp.CustomUserDetails;
 import com.example.demo.entity.Member;
 import com.example.demo.repository.MemberRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         System.out.println("email: " + email);
-        Member userData = memberRepository.findByEmail(email);
+        Member userData = memberRepository.findByUsername(email);
 
         if(userData == null) {
             throw new UsernameNotFoundException("해당 이메일이 없음 : " + email);

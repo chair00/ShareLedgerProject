@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Schema(description = "기능 테스트용 토큰")
+@Schema(description = "토큰 전달 DTO")
 public class TokenDTO {
 
     @Schema(description = "토큰")

@@ -1,8 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.CategoryDTO;
 import com.example.demo.dto.HistoryDTO;
-import com.example.demo.dto.ResponseDTO;
 import com.example.demo.dto.ReturnIdDTO;
 import com.example.demo.entity.Category;
 import com.example.demo.entity.History;
@@ -11,17 +9,13 @@ import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.HistoryRepository;
 import com.example.demo.repository.LedgerRepository;
 import com.example.demo.specification.HistorySpecification;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor

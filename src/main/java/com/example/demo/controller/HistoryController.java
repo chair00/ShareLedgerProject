@@ -1,11 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.CategoryDTO;
 import com.example.demo.dto.HistoryDTO;
 import com.example.demo.dto.ResponseDTO;
 import com.example.demo.dto.ReturnIdDTO;
-import com.example.demo.entity.History;
-import com.example.demo.response.ApiResult;
 import com.example.demo.service.HistoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
