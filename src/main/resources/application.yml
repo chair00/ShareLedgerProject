@@ -3,7 +3,7 @@ aws:
     enabled: true
     prefix: /config
     profile-separator: _
-    name:
+    name: share-ledger
 
 # Datasource
 spring:
