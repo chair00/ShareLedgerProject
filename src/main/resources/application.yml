@@ -1,5 +1,14 @@
+aws:
+  paramstore:
+    enabled: true
+    prefix: /prod
+    profile-separator: _
+    name:
+
 # Datasource
 spring:
+  config:
+    import: 'aws-parameterstore:/prod/share-ledger/secrets/'
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:test
