@@ -1,9 +1,12 @@
-aws:
-  paramstore:
-    enabled: true
-    prefix: /config
-    profile-separator: _
-    name: share-ledger
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    paramstore:
+      enabled: true
+      prefix: /config
+      profile-separator: _
+      name: share-ledger
 
 logging:
   level:
@@ -13,7 +16,7 @@ logging:
 # Datasource
 spring:
   config:
-    import: 'aws-parameterstore:'
+    import: 'aws-parameterstore:/config/share-ledger_prod/'
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:test
