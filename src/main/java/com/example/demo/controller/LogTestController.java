@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class LogTestController {
     private static final Logger logger = LoggerFactory.getLogger(LogTestController.class);
 
-    @Value("${KAKAO_CLIENT_ID}")
+    @Value("${spring.security.oauth2.client.registration.naver.client-id}")
+    private String naverClientId;
+
+    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String kakaoClientId;
 
     @GetMapping("/test-log")
     public String testLog() {
+        logger.info("NAVER_CLIENT_ID: {}", naverClientId);
         logger.info("KAKAO_CLIENT_ID: {}", kakaoClientId);
-        return "Logged KAKAO_CLIENT_ID!";
+        return "Logged CLIENT_ID!";
     }
 }
