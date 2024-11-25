@@ -5,6 +5,11 @@ aws:
     profile-separator: _
     name: share-ledger
 
+logging:
+  level:
+    io.awspring: DEBUG
+    org.springframework.cloud.aws: DEBUG
+
 # Datasource
 spring:
   config:
