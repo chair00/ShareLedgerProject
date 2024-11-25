@@ -24,6 +24,8 @@ public class Member {
     private String email; // 로그인 시 사용하는 id
     private String name;
     private String password;
+
+    @Column(unique = true)
     private String nickname;
 
     private String role; // 공유 가계부 전체 시스템에 대한 권한 분류(관리자 계정은 하나, 나머지는 전부 사용자)
