@@ -50,6 +50,8 @@ public class MemberDTO {
         private String email;
         @Schema(description = "이름")
         private String name;
+        @Schema(description = "권한")
+        private String role;
         @Schema(description = "provider / ex. naver, google, kakao")
         private String provider;
     }
