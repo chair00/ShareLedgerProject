@@ -21,6 +21,6 @@ public class LogTestController {
     public String testLog() {
         logger.info("NAVER_CLIENT_ID: {}", naverClientId);
         logger.info("KAKAO_CLIENT_ID: {}", kakaoClientId);
-        return "Logged CLIENT_ID!";
+        return "Logged CLIENT_ID!!";
     }
 }
