@@ -21,7 +21,7 @@ public class Member {
 
     private String provider; // 소셜 제공자 (ex. google, facebook)
 
-    private String email; // 로그인 시 사용하는 id
+    private String email;
     private String name;
     private String password;
 
