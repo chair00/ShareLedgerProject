@@ -62,10 +62,12 @@ public class MemberService {
 
         // 사용자 존재 유무 확인
         String username = req.getUsername();
+        System.out.println("username");
 
         Boolean isExist = memberRepository.existsByUsername(username);
 
         if(!isExist) {
+            System.out.println("no Exist");
             Member member = new Member();
             member.setUsername(req.getUsername());
             member.setEmail(req.getEmail());
