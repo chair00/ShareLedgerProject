@@ -1,9 +1,6 @@
 package com.example.demo.dto;
 
-import com.example.demo.entity.Category;
-import com.example.demo.entity.History;
-import com.example.demo.entity.Ledger;
-import com.example.demo.entity.Member;
+import com.example.demo.entity.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +30,10 @@ public class ReturnIdDTO {
 
     public ReturnIdDTO(Long id) {
         this.id = id;
+    }
+
+    public ReturnIdDTO(Invite entity) {
+        this.id = entity.getId();
     }
 }
 

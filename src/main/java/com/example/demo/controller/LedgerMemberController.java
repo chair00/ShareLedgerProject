@@ -42,12 +42,12 @@ public class LedgerMemberController {
         return ResponseEntity.ok(res);
     }
 
-    // 회원 초대
-    @Operation(summary = "회원 초대", description = "관리자가 가계부에 가입되지 않은 사용자를 초대한다.")
-    @PostMapping("/ledger/{ledger_id}/invite")
-    public ResponseEntity<?> inviteMember(){
-        return ResponseEntity.ok(res);
-    }
+//    // 회원 초대
+//    @Operation(summary = "회원 초대", description = "관리자가 가계부에 가입되지 않은 사용자를 초대한다.")
+//    @PostMapping("/ledger/{ledger_id}/invite")
+//    public ResponseEntity<?> inviteMember(){
+//        return ResponseEntity.ok(res);
+//    }
 
     // 초대 요청 조회
     @Operation(summary = "초대 요청 조회", description = "사용자가 가계부에서 온 초대 요청을 조회한다.")
