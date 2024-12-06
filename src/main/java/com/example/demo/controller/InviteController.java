@@ -38,9 +38,9 @@ public class InviteController {
         // 초대 생성
         ReturnIdDTO inviteId = inviteService.createInvite(ledgerId, req, userDetails.getId());
 
-//        // 초대 알림 전송
-//        String ledgerName = inviteService.getLedgerName(ledgerId);
-//        notificationService.sendInviteNotification(req.getMemberUsername(), ledgerName); // 알림 전송
+        // 초대 알림 전송
+        String ledgerName = inviteService.getLedgerName(ledgerId);
+        notificationService.sendInviteNotification(req.getMemberUsername(), ledgerName); // 알림 전송
 
         return ResponseEntity.ok(inviteId);
     }
@@ -62,15 +62,15 @@ public class InviteController {
         // 초대 응답
         inviteService.responseInvite(inviteId, res);
 
-//        // 초대 응답 알림 전송
-//        String ledgerOwnerUsername = inviteService.getLedgerOwnerUsername(inviteId);
-//        String memberName = inviteService.getMemberName(inviteId);
-//        boolean isAccepted = inviteService.getResponseAction(inviteId);
-//        notificationService.sendInviteResponseNotification(
-//                ledgerOwnerUsername,
-//                memberName,
-//                isAccepted
-//        );
+        // 초대 응답 알림 전송
+        String ledgerOwnerUsername = inviteService.getLedgerOwnerUsername(inviteId);
+        String memberName = inviteService.getMemberName(inviteId);
+        boolean isAccepted = inviteService.getResponseAction(inviteId);
+        notificationService.sendInviteResponseNotification(
+                ledgerOwnerUsername,
+                memberName,
+                isAccepted
+        );
 
         return ResponseEntity.ok(new ResponseDTO("초대에 대한 응답이 처리되었습니다."));
     }
