@@ -35,5 +35,9 @@ public class ReturnIdDTO {
     public ReturnIdDTO(Invite entity) {
         this.id = entity.getId();
     }
+
+    public ReturnIdDTO(JoinRequest entity) {
+        this.id = entity.getId();
+    }
 }
 

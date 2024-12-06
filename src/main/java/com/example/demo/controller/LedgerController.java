@@ -2,12 +2,14 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.LedgerDTO;
 import com.example.demo.dto.ReturnIdDTO;
+import com.example.demo.dto.signUp.CustomUserDetails;
 import com.example.demo.response.ApiResult;
 import com.example.demo.service.LedgerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -24,8 +26,8 @@ public class LedgerController {
     // 가계부 생성
     @Operation(summary = "가계부 생성", description = "새로운 가계부를 생성한다. 생성한 사용자는 그 가계부의 관리자가 된다.")
     @PostMapping("")
-    public ResponseEntity<ReturnIdDTO> createLedger(@RequestBody LedgerDTO ledgerDto){
-        ReturnIdDTO createdId = ledgerService.createLedger(ledgerDto);
+    public ResponseEntity<ReturnIdDTO> createLedger(@RequestBody LedgerDTO ledgerDto, @AuthenticationPrincipal CustomUserDetails userDetails){
+        ReturnIdDTO createdId = ledgerService.createLedger(ledgerDto, userDetails.getId());
         return ResponseEntity.created(URI.create("/ledger/" + createdId)).body(createdId);
     }
 

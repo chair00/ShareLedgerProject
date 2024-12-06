@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Invite {
+public class JoinRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

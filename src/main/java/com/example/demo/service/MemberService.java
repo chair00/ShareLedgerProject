@@ -65,10 +65,10 @@ public class MemberService {
         System.out.println("username");
 
         Boolean isExist = memberRepository.existsByUsername(username);
+        Member member = new Member();
 
         if(!isExist) {
             System.out.println("no Exist");
-            Member member = new Member();
             member.setUsername(req.getUsername());
             member.setEmail(req.getEmail());
             member.setProvider(req.getProvider());
@@ -76,7 +76,11 @@ public class MemberService {
             member.setRole("ROLE_USER");
 
             memberRepository.save(member);
+        } else {
+            member = memberRepository.findByUsername(username);
         }
+
+        Long id = member.getId();
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -85,7 +89,7 @@ public class MemberService {
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String token = jwtUtil.createJwt(username, role, 60*60*60L);
+        String token = jwtUtil.createJwt(id, username, role, 60*60*60L);
         String generatedToken = "Bearer " + token;
 
         return new TokenDTO(generatedToken);

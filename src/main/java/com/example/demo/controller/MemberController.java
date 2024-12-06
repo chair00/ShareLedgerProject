@@ -63,6 +63,8 @@ public class MemberController {
     }
 
     // 탈퇴
+    // 가계부가 남아 있을 경우 + 그 안에 다른 멤버도 있을 경우 -> 가계부 완전 삭제 / 가계부 owner 권한 위임 할지 선택해야함
+    // 가계부가 남아 있는데 안에 멤버가 없을 경우는 그냥 삭제. (아님 다 삭제할건지 메시지로 물어보든가..)
     @Operation(summary = "탈퇴", description = "사용자가 계정을 탈퇴한다.")
     @PostMapping("/withdraw")
     public ResponseEntity<?> withdraw(){

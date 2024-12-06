@@ -15,7 +15,8 @@ public class Ledger {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String ledgerName;
+    @Column(unique = true, nullable = false)
+    private String name;
 
     @OneToMany(mappedBy = "ledger", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<History> historyList;
@@ -23,8 +24,12 @@ public class Ledger {
     @OneToMany(mappedBy = "ledger", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> categoryList;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="owner", nullable = false)
+    private Member owner;
+
     @Builder
-    public Ledger(String ledgerName) {
-        this.ledgerName = ledgerName;
+    public Ledger(String name) {
+        this.name = name;
     }
 }

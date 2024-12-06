@@ -18,13 +18,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        System.out.println("email: " + email);
-        Member userData = memberRepository.findByUsername(email);
+        Member userData = memberRepository.findByUsername(username);
 
         if(userData == null) {
-            throw new UsernameNotFoundException("해당 이메일이 없음 : " + email);
+            throw new UsernameNotFoundException("해당 username이 없음 : " + username);
         }
 
         return new CustomUserDetails(userData);

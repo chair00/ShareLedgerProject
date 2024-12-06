@@ -20,12 +20,9 @@ public class JWTUtil {
     }
 
     // 토큰의 특정 요소를 검증하는 메서드
-    public String getEmail(String token) {
-
-        // secretKey로 해당 서버에서 발급한 토큰이 맞는지 검증 후 username을 리턴.
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("email", String.class);
+    public String getSub(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("sub", String.class);
     }
-    // 있어야하는지 모르겠음
     public String getUsername(String token) {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
     }
@@ -40,9 +37,11 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
-    public String createJwt(String username, String role, Long expiredMs) {
+    public String createJwt(Long sub, String username, String role, Long expiredMs) {
 
         return Jwts.builder()
+                .setSubject(String.valueOf(sub))
+//                .claim("sub", sub)
                 .claim("username", username)
                 .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -57,6 +56,6 @@ public class JWTUtil {
         String testRole = "ADMIN";
         Long tenYearsMs = 1000L * 60 * 60 * 24 * 365 * 10; // 10년
 
-        return createJwt(testUsername, testRole, tenYearsMs);
+        return createJwt(10580L, testUsername, testRole, tenYearsMs);
     }
 }

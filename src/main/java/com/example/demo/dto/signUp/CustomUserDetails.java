@@ -31,6 +31,10 @@ public class CustomUserDetails implements UserDetails {
         return collection;
     }
 
+    public Long getId() {
+        return member.getId();
+    }
+
     @Override
     public String getPassword() {
         return member.getPassword();
@@ -38,7 +42,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return member.getEmail();
+        return member.getUsername();
     }
 
     @Override

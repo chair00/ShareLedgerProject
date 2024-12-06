@@ -44,6 +44,7 @@ public class MemberDTO {
     @Getter
     @Setter
     public static class OAuth2Login {
+        private Long id;
         @Schema(description = "username = provider + \" \" + providerId -> 사용자 식별 시 사용")
         private String username;
         @Schema(description = "이메일")

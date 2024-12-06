@@ -48,16 +48,20 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        String email = jwtUtil.getEmail(token);
+        String id = jwtUtil.getSub(token);
+        String username = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);
 
         // SecurityContextHolder에 저장하기 위해 token의 payload에 저장된 값을 통해 사용자 정보를 세션으로 만든다.
         Member member = new Member();
-        member.setEmail(email);
+        member.setId(Long.parseLong(id));
+        member.setUsername(username);
         member.setPassword("temppassword"); //세션 등록만 하면 돼서 비번은 아무거나 넣어준다.
         member.setRole(role);
 
         CustomUserDetails customUserDetails = new CustomUserDetails(member);
+
+        System.out.println("In JWTFilter - getUsername : "+customUserDetails.getUsername());
 
         Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
 

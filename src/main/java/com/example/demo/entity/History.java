@@ -27,11 +27,11 @@ public class History {
     private String memo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="ledgerId", nullable = false)
+    @JoinColumn(name="ledger", nullable = false)
     private Ledger ledger;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="categoryId", nullable = false)
+    @JoinColumn(name="category", nullable = false)
     private Category category;
 
     @Builder

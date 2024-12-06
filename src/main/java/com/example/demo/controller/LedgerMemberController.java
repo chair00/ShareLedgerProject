@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "가계부 멤버", description = "가계부-멤버 API")
 public class LedgerMemberController {
+    // -- 추가할 기능 --
+    // 가계부 권한 변경
+    // 가계부 owner 위임 기능
+
     ResponseDTO res = new ResponseDTO("성공");
     // 회원 목록 조회
     @Operation(summary = "회원 목록 조회", description = "가계부에 가입된 회원 목록을 조회한다.")
@@ -49,27 +53,6 @@ public class LedgerMemberController {
 //        return ResponseEntity.ok(res);
 //    }
 
-    // 초대 요청 조회
-    @Operation(summary = "초대 요청 조회", description = "사용자가 가계부에서 온 초대 요청을 조회한다.")
-    @GetMapping("/member/invite")
-    public ResponseEntity<?> showInvite(){
-        return ResponseEntity.ok(res);
-    }
-
-    // 초대 요청 수락
-    @Operation(summary = "초대 요청 수락", description = "사용자가 가계부에서 온 초대 요청을 수락한다.")
-    @PostMapping("/member/invite/{request_id}/accept")
-    public ResponseEntity<?> acceptInvite(){
-        return ResponseEntity.ok(res);
-    }
-
-    // 초대 요청 거절
-    @Operation(summary = "초대 요청 거절", description = "사용자가 가계부에서 온 초대 요청을 거절한다.")
-    @PostMapping("/member/invite/{request_id}/reject")
-    public ResponseEntity<?> rejectInvite(){
-        return ResponseEntity.ok(res);
-    }
-
     // 가계부 이름/ 아이디 조회
     @Operation(summary = "검색(가계부/사용자)", description = "가계부 이름 또는 사용자 id를 검색한다.")
     @GetMapping("/ledger")
@@ -77,32 +60,6 @@ public class LedgerMemberController {
         return ResponseEntity.ok(res);
     }
 
-    // 참여 요청
-    @Operation(summary = "참여 요청", description = "가계부에 가입되지 않은 사용자가 가계부 가입을 요청한다.")
-    @PostMapping("/member/join")
-    public ResponseEntity<?> joinLedger(){
-        return ResponseEntity.ok(res);
-    }
 
-    // 참여 요청 조회
-    @Operation(summary = "참여 요청 조회", description = "가계부 관리자가 외부 사용자로부터 받은 참여 요청을 조회한다.")
-    @GetMapping("/ledger/{ledger_id}/join")
-    public ResponseEntity<?> showJoin(){
-        return ResponseEntity.ok(res);
-    }
-
-    // 참여 요청 수락
-    @Operation(summary = "참여 요청 수락", description = "가계부 관리자가 외부 사용자로부터 받은 참여 요청을 수락한다.")
-    @PostMapping("/ledger/{ledger_id}/join/{request_id}/accept")
-    public ResponseEntity<?> acceptJoin(){
-        return ResponseEntity.ok(res);
-    }
-
-    // 참여 요청 거절
-    @Operation(summary = "참여 요청 거절", description = "가계부 관리자가 외부 사용자로부터 받은 참여 요청을 거절한다.")
-    @PostMapping("/ledger/{ledger_id}/join/{request_id}/reject")
-    public ResponseEntity<?> rejectJoin(){
-        return ResponseEntity.ok(res);
-    }
 
 }

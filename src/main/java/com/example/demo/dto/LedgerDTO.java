@@ -16,13 +16,13 @@ public class LedgerDTO {
 
     @Builder
     public LedgerDTO(Ledger ledger) {
-        this.ledgerName = ledger.getLedgerName();
+        this.ledgerName = ledger.getName();
     }
 
     @Builder
     public Ledger toEntity() {
         return Ledger.builder()
-                .ledgerName(ledgerName)
+                .name(ledgerName)
                 .build();
     }
 
