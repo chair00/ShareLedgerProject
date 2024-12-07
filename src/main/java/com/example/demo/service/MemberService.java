@@ -89,7 +89,7 @@ public class MemberService {
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String token = jwtUtil.createJwt(id, username, role, 60*60*60L);
+        String token = jwtUtil.createJwt(id, username, role, 1000 * 60 * 60 * 24L);
         String generatedToken = "Bearer " + token;
 
         return new TokenDTO(generatedToken);
