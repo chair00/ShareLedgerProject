@@ -25,13 +25,6 @@ public class TestTokenController {
     @Operation(summary = "토큰 확인", description = "테스트용 계정의 토큰을 확인한다. email = TEST, username = TEST, password = TEST")
     @GetMapping("/token")
     public TokenDTO showGeneratedToken() {
-//
-//        Member admin = new Member();
-//        admin.setUsername("TEST"); // 고정된 username
-//        admin.setPassword(passwordEncoder.encode("TEST")); // 고정된 password
-//        admin.setRole("ROLE_ADMIN"); // 예: 관리자 권한
-//
-//        memberRepository.save(admin);
 
         // 관리자 계정 조회
         Member test = memberRepository.findByUsername("TEST");
