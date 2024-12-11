@@ -29,7 +29,6 @@ public class TestTokenController {
         // 관리자 계정 조회
         Member test = memberRepository.findByUsername("TEST");
 
-
         // JWT 생성
         String token = "Bearer " + jwtUtil.createJwt(
                 test.getId(),
