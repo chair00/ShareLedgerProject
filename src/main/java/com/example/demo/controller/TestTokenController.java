@@ -22,7 +22,7 @@ public class TestTokenController {
     private final JWTUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
 
-    @Operation(summary = "토큰 확인", description = "테스트용 계정의 토큰을 확인한다. g// email = TEST, username = TEST, password = TEST")
+    @Operation(summary = "토큰 확인", description = "테스트용 계정의 토큰을 확인한다. email = TEST, username = TEST, password = TEST")
     @GetMapping("/token")
     public TokenDTO showGeneratedToken() {
 
