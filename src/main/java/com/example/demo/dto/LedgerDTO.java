@@ -4,26 +4,40 @@ import com.example.demo.entity.Ledger;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
-
-@Schema(description = "가계부 응답/요청 DTO")
 public class LedgerDTO {
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @Schema(description = "가계부 생성/수정 요청 DTO")
+    public static class RequestDTO {
 
-    @Schema(description = "가계부 이름")
-    private String ledgerName;
+        @Schema(description = "가계부 이름")
+        private String ledgerName;
 
-    @Builder
-    public LedgerDTO(Ledger ledger) {
-        this.ledgerName = ledger.getName();
+        public RequestDTO(String ledgerName) {
+            this.ledgerName = ledgerName;
+        }
     }
 
-    @Builder
-    public Ledger toEntity() {
-        return Ledger.builder()
-                .name(ledgerName)
-                .build();
+    @Getter
+    @Setter
+    @Schema(description = "가계부 정보 조회 DTO")
+    public static class ResponseDTO {
+
+        @Schema(description = "가계부 id")
+        private Long ledgerId;
+
+        @Schema(description = "가계부 이름")
+        private String ledgerName;
+
+        @Schema(description = "가계부 owner 유저네임")
+        private String ledgerOwnerUsername;
+
+        public ResponseDTO(Long ledgerId, String ledgerName, String ledgerOwnerUsername) {
+            this.ledgerId = ledgerId;
+            this.ledgerName = ledgerName;
+            this.ledgerOwnerUsername = ledgerOwnerUsername;
+        }
     }
 
 }

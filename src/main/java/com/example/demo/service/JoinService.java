@@ -22,20 +22,21 @@ public class JoinService {
     private final LedgerRepository ledgerRepository;
     private final MemberRepository memberRepository;
     private final JoinRepository joinRepository;
-    private final LedgerMemberRepository ledgerMemberRepository;
+    private final LedgerMemberService ledgerMemberService;
 
     // 생성
     @Transactional
     public ReturnIdDTO createJoin(Long ledgerId, Long memberId) {
+
+        // 가계부 최대 생성 개수 확인
+        ledgerMemberService.validateLedgerCount(memberId);
 
         Ledger ledger = ledgerRepository.findById(ledgerId)
                 .orElseThrow(() -> new IllegalArgumentException("가계부를 찾을 수 없습니다."));
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("멤버를 찾을 수 없습니다."));
 
-        if (ledgerMemberRepository.existsByLedgerAndMember(ledger, member)) {
-            throw new IllegalStateException("이미 해당 가계부에 가입된 회원입니다.");
-        }
+        ledgerMemberService.checkMemberNotInLedger(ledger, member);
 
         if (joinRepository.existsByLedgerAndMemberAndStatus(ledger, member, RequestStatus.PENDING)) {
             throw new IllegalStateException("이미 가입 요청을 보냈습니다.");
@@ -63,6 +64,7 @@ public class JoinService {
 
         return joinRequests.stream()
                 .map(joinRequest -> new JoinDTO.RequestData(
+                        joinRequest.getId(),
                         joinRequest.getMember().getUsername(),
                         joinRequest.getMember().getName()
                 )).collect(Collectors.toList());
@@ -82,24 +84,45 @@ public class JoinService {
         JoinRequest joinRequest = joinRepository.findById(joinId)
                 .orElseThrow(() -> new IllegalArgumentException("요청을 찾을 수 없습니다."));
 
-        System.out.println(res.getAction());
-
         if(res.getAction() == ResponseAction.YES) {
+
+            // 가계부 최대 생성 개수 확인
+            // if 회원이 가입된 가계부 수가 9개인데, 2개의 가계부에 가입 요청을 보내고 모두 수락이 온다면, 총 가계부 수가 11개가 됨.
+            // 이를 방지하기 위해 저장하기 전 한 번더 validate 검사
+            ledgerMemberService.validateLedgerCount(joinRequest.getMember().getId());
 
             joinRequest.setStatus(RequestStatus.ACCEPTED);
 
-            LedgerMember ledgerMember = LedgerMember.builder()
-                    .ledger(joinRequest.getLedger())
-                    .member(joinRequest.getMember())
-                    .role(LedgerRole.READ_ONLY)
-                    .build();
+            ledgerMemberService.saveMemberInLedger(
+                    joinRequest.getLedger(),
+                    joinRequest.getMember(),
+                    LedgerRole.READ_ONLY);
 
-            ledgerMemberRepository.save(ledgerMember);
         } else if(res.getAction() == ResponseAction.NO) {
 
             joinRequest.setStatus(RequestStatus.DECLINED);
         }
 
         joinRepository.save(joinRequest);
+    }
+
+    public boolean getResponseAction(Long joinId){
+        JoinRequest join = joinRepository.findById(joinId)
+                .orElseThrow(() -> new IllegalArgumentException("가입 요청을 찾을 수 없습니다."));
+
+        if(join.getStatus() == RequestStatus.ACCEPTED) {
+            return true;
+        } else if (join.getStatus() == RequestStatus.DECLINED) {
+            return false;
+        } else {
+            throw new IllegalStateException("해당 초대에 대한 응답이 처리되지 않았습니다.");
+        }
+    }
+
+    public String getRequestMemberUsername(Long joinId) {
+        JoinRequest join = joinRepository.findById(joinId)
+                .orElseThrow(() -> new IllegalArgumentException("가입 요청을 찾을 수 없습니다."));
+
+        return join.getMember().getUsername();
     }
 }

@@ -30,4 +30,24 @@ public class NotificationService {
                 new Notification("초대 응답 알림", message)
         );
     }
+
+    public void sendJoinNotification(String ledgerOwnerUsername, String memberName) {
+        messagingTemplate.convertAndSendToUser(
+                ledgerOwnerUsername,
+                "/topic/join",
+                new Notification("가입 요청 알림", memberName + " 님이 가계부에 가입 요청을 보냈습니다.")
+        );
+    }
+
+    public void sendJoinResponseNotification(String memberUsername, String ledgerName, boolean accepted) {
+        String message = accepted ?
+                ledgerName + " 에서 가입 요청을 수락했습니다." :
+                ledgerName + " 에서 가입 요청을 거절했습니다.";
+
+        messagingTemplate.convertAndSendToUser(
+                memberUsername,
+                "topic/join-response",
+                new Notification("가입 요청에 대한 응답 알림", message)
+        );
+    }
 }

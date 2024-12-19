@@ -18,6 +18,7 @@ public class LedgerMemberController {
     // 가계부 owner 위임 기능
 
     ResponseDTO res = new ResponseDTO("성공");
+
     // 회원 목록 조회
     @Operation(summary = "회원 목록 조회", description = "가계부에 가입된 회원 목록을 조회한다.")
     @GetMapping("/ledger/{ledger_id}/member")
@@ -45,21 +46,5 @@ public class LedgerMemberController {
     public ResponseEntity<?> updateAuth(){
         return ResponseEntity.ok(res);
     }
-
-//    // 회원 초대
-//    @Operation(summary = "회원 초대", description = "관리자가 가계부에 가입되지 않은 사용자를 초대한다.")
-//    @PostMapping("/ledger/{ledger_id}/invite")
-//    public ResponseEntity<?> inviteMember(){
-//        return ResponseEntity.ok(res);
-//    }
-
-    // 가계부 이름/ 아이디 조회
-    @Operation(summary = "검색(가계부/사용자)", description = "가계부 이름 또는 사용자 id를 검색한다.")
-    @GetMapping("/ledger")
-    public ResponseEntity<?> searchLedger(){
-        return ResponseEntity.ok(res);
-    }
-
-
 
 }

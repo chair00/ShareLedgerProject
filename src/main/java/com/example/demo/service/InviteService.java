@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 public class InviteService {
 
     private final InviteRepository inviteRepository;
-    private final LedgerMemberRepository ledgerMemberRepository;
+    private final LedgerMemberService ledgerMemberService;
+    // private final LedgerMemberRepository ledgerMemberRepository;
     private final LedgerRepository ledgerRepository;
     private final MemberRepository memberRepository;
 
@@ -36,9 +37,7 @@ public class InviteService {
             throw new SecurityException("해당 가계부의 요청을 생성할 권한이 없습니다.");
         }
 
-        if (ledgerMemberRepository.existsByLedgerAndMember(ledger, member)) {
-            throw new IllegalStateException("이미 해당 가계부에 가입된 회원입니다.");
-        }
+        ledgerMemberService.checkMemberNotInLedger(ledger, member);
 
         if (inviteRepository.existsByLedgerAndMemberAndStatus(ledger, member, RequestStatus.PENDING)) {
             throw new IllegalStateException("이미 가입 요청을 보냈습니다.");
@@ -61,6 +60,7 @@ public class InviteService {
 
         return invites.stream()
                 .map(invite -> new InviteDTO.RequestData(
+                        invite.getId(),
                         invite.getLedger().getName()
                 )).collect(Collectors.toList());
     }
@@ -72,16 +72,16 @@ public class InviteService {
 
         if(res.getAction() == ResponseAction.YES) {
 
+            ledgerMemberService.validateLedgerCount(invite.getMember().getId());
+
             invite.setStatus(RequestStatus.ACCEPTED);
 
             // LedgerMember에 저장 -> 초대받는 경우 권한은 read_write 로 설정
-            LedgerMember ledgerMember = LedgerMember.builder()
-                    .ledger(invite.getLedger())
-                    .member(invite.getMember())
-                    .role(LedgerRole.READ_WRITE)
-                    .build();
+            ledgerMemberService.saveMemberInLedger(
+                    invite.getLedger(),
+                    invite.getMember(),
+                    LedgerRole.READ_WRITE);
 
-            ledgerMemberRepository.save(ledgerMember);
         } else if (res.getAction() == ResponseAction.NO){
 
             invite.setStatus(RequestStatus.DECLINED);

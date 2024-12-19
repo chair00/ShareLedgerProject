@@ -24,11 +24,14 @@ public class InviteDTO {
     @Setter
     @Schema(description = "초대 요청 조회 DTO")
     public static class RequestData {
+        @Schema(description = "초대 요청 id")
+        private Long inviteId;
 
         @Schema(description = "초대 요청을 보낸 가계부 이름")
         private String ledgerName;
 
-        public RequestData(String ledgerName) {
+        public RequestData(Long inviteId, String ledgerName) {
+            this.inviteId = inviteId;
             this.ledgerName = ledgerName;
         }
     }

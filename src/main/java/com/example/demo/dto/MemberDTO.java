@@ -2,7 +2,9 @@ package com.example.demo.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -64,5 +66,27 @@ public class MemberDTO {
         private String email;
         @Schema(description = "비밀번호")
         private String password;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(description = "멤버 정보 응답")
+    public static class Response {
+        @Schema(description = "사용자 username")
+        private String username;
+
+        @Schema(description = "사용자 이메일")
+        private String email;
+
+        @Schema(description = "사용자 이름")
+        private String name;
+
+//        public Response(String username, String email, String name) {
+//            this.username = username;
+//            this.email = email;
+//            this.name = name;
+//        }
     }
 }

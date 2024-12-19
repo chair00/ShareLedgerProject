@@ -1,16 +1,18 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.dto.MemberDTO;
-import com.example.demo.dto.ResponseDTO;
-import com.example.demo.dto.ReturnIdDTO;
-import com.example.demo.dto.TokenDTO;
+import com.example.demo.dto.*;
+import com.example.demo.dto.signUp.CustomUserDetails;
+import com.example.demo.service.LedgerMemberService;
 import com.example.demo.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("")
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final LedgerMemberService ledgerMemberService;
 
     ResponseDTO res = new ResponseDTO("성공");
 
@@ -84,7 +87,11 @@ public class MemberController {
     // 가계부 목록 조회
     @Operation(summary = "가계부 목록 조회", description = "사용자가 가입한 가계부 목록을 조회한다.")
     @GetMapping("/member/ledger-list")
-    public ResponseEntity<?> showLedgerList() {return ResponseEntity.ok(res);}
+    public ResponseEntity<List<LedgerDTO.ResponseDTO>> showLedgerList(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        List<LedgerDTO.ResponseDTO> ledgers = ledgerMemberService.findLedgersByMemberId(userDetails.getId());
+        return ResponseEntity.ok(ledgers);
+    }
+
 
     // 프로필 등록
     @Operation(summary = "프로필 등록", description = "사용자가 프로필을 등록한다.")
@@ -100,5 +107,14 @@ public class MemberController {
     @Operation(summary = "프로필 수정", description = "사용자가 등록한 프로필을 수정한다.")
     @PutMapping("/member/profile")
     public ResponseEntity<?> updateProfile() {return ResponseEntity.ok(res);}
+
+    // 멤버 검색
+    @Operation(summary = "멤버 검색", description = "username으로 멤버를 검색한다.")
+    @GetMapping("/member/search")
+    public ResponseEntity<List<MemberDTO.Response>> searchMember(@RequestParam String username) {
+
+        List<MemberDTO.Response> members = memberService.findMember(username);
+        return ResponseEntity.ok(members);
+    }
 
 }

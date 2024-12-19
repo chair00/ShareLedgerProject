@@ -13,13 +13,17 @@ public class JoinDTO {
     @Schema(description = "가계부 가입 요청 조회 DTO")
     public static class RequestData {
 
+        @Schema(description = "가입 요청 id")
+        private Long joinId;
+
         @Schema(description = "가입 요청을 보낸 멤버 username")
         private String memberUsername;
 
         @Schema(description = "가입 요청을 보낸 멤버 이름")
         private String memberName;
 
-        public RequestData(String memberUsername, String memberName) {
+        public RequestData(Long joinId, String memberUsername, String memberName) {
+            this.joinId = joinId;
             this.memberUsername = memberUsername;
             this.memberName = memberName;
         }

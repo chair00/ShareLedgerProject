@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -96,10 +98,18 @@ public class MemberService {
 
     }
 
+    public MemberDTO.Response getMember(String username) {
+        Member member = memberRepository.findByUsername(username);
 
-//    public Member login(MemberDTO.Login req){
-//        Member findMember = memberRepository.findByEmail(req.getEmail());
-//        return findMember;
-//    }
+        return new MemberDTO.Response(member.getUsername(), member.getEmail(), member.getName());
+    }
+
+    public List<MemberDTO.Response> findMember(String username) {
+        List<Member> members = memberRepository.findByUsernameContaining(username);
+
+        return members.stream()
+                .map(member -> new MemberDTO.Response(member.getUsername(), member.getEmail(), member.getName()))
+                .collect(Collectors.toList());
+    }
 
 }
