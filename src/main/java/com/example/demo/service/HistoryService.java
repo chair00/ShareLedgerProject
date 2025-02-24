@@ -27,7 +27,7 @@ public class HistoryService {
 
 
     // 내역 생성
-    public ReturnIdDTO save(Long ledgerId, HistoryDTO.Request historyReqDto, Long memberId) {
+    public ReturnIdDTO save(Long ledgerId, HistoryDTO.HistoryRequest historyReqDto, Long memberId) {
 
         Ledger ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다"));
 
@@ -48,16 +48,16 @@ public class HistoryService {
     }
 
     // 내역 상세 조회
-    public HistoryDTO.Response find(Long historyId) {
+    public HistoryDTO.HistoryResponse find(Long historyId) {
         History history = historyRepository.findById(historyId).orElseThrow(() -> new IllegalArgumentException("내역 id가 존재하지 않습니다."));
 
-        return new HistoryDTO.Response(history);
+        return new HistoryDTO.HistoryResponse(history);
         //return CategoryResDto.builder().name(category.getName()).type(category.getType()).parentCategoryId(parentId).children(children).build();
     }
 
     // 내역 수정
     @Transactional
-    public ReturnIdDTO update(Long historyId, HistoryDTO.Request historyReqDto) {
+    public ReturnIdDTO update(Long historyId, HistoryDTO.HistoryRequest historyReqDto) {
 
         History history = historyRepository.findById(historyId).orElseThrow(() -> new IllegalArgumentException("내역 id가 존재하지 않습니다."));
 
@@ -102,13 +102,13 @@ public class HistoryService {
 //        return HistoryDTO.Response.ResponseList(historyRepository.findByCategories(ledgerId, categories));
 //    }
 
-    public List<HistoryDTO.Response> findByConditions(Long ledgerId, List<Long> categories, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<HistoryDTO.HistoryResponse> findByConditions(Long ledgerId, List<Long> categories, LocalDateTime startDate, LocalDateTime endDate) {
         Specification<History> specification = Specification
                 .where(HistorySpecification.hasLedgerId(ledgerId))
                 .and(HistorySpecification.hasCategories(categories))
                 .and(HistorySpecification.hasDateBetween(startDate, endDate));
 
-        return HistoryDTO.Response.ResponseList(historyRepository.findAll(specification));
+        return HistoryDTO.HistoryResponse.ResponseList(historyRepository.findAll(specification));
     }
 
     //만들어야함

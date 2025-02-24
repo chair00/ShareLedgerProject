@@ -1,6 +1,5 @@
 package com.example.demo.dto;
 
-import com.example.demo.entity.Category;
 import com.example.demo.entity.History;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,9 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +18,7 @@ public class HistoryDTO {
     @Getter
     @Setter
     @Schema(description = "내역 생성/수정 요청")
-    public static class Request {
+    public static class HistoryRequest {
         @Schema(description = "내역명")
         @NotBlank(message = "내역명을 입력해야합니다.")
         private String name;
@@ -59,7 +56,7 @@ public class HistoryDTO {
     @Setter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Schema(description = "내역 데이터 응답")
-    public static class Response {
+    public static class HistoryResponse {
 
         @Schema(description = "내역 id")
         private Long id;
@@ -89,7 +86,7 @@ public class HistoryDTO {
         private Long ledgerId;
 
 
-        public Response(History entity) {
+        public HistoryResponse(History entity) {
             this.id = entity.getId();
             this.name = entity.getName();
             this.price = entity.getPrice();
@@ -106,9 +103,9 @@ public class HistoryDTO {
         }
 
         @Schema(description = "내역 목록 응답")
-        public static List<HistoryDTO.Response> ResponseList(List<History> historyList) {
-            List<HistoryDTO.Response> responseList = historyList.stream()
-                    .map(o->new HistoryDTO.Response(o))
+        public static List<HistoryResponse> ResponseList(List<History> historyList) {
+            List<HistoryResponse> responseList = historyList.stream()
+                    .map(o->new HistoryResponse(o))
                     .collect(Collectors.toList());
             return responseList;
         }

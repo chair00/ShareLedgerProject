@@ -34,7 +34,7 @@ public class HistoryController {
             "date 형식은 yyyyMMddHHmm (문자열)")
     @PostMapping("/ledger/{ledgerId}/history")
     public ResponseEntity<ReturnIdDTO> createHistory(@PathVariable Long ledgerId,
-                                                     @Valid @RequestBody HistoryDTO.Request historyReqDto,
+                                                     @Valid @RequestBody HistoryDTO.HistoryRequest historyReqDto,
                                                      @AuthenticationPrincipal CustomUserDetails userDetails){
 
         Long memberId = userDetails.getId();
@@ -46,16 +46,16 @@ public class HistoryController {
     // 내역 상세 조회
     @Operation(summary = "내역 상세 조회", description = "생성한 내역을 상세 조회한다.")
     @GetMapping("/ledger/{ledgerId}/history/{historyId}")
-    public ResponseEntity<HistoryDTO.Response> getHistory(@PathVariable Long historyId){
+    public ResponseEntity<HistoryDTO.HistoryResponse> getHistory(@PathVariable Long historyId){
 
-        HistoryDTO.Response history = historyService.find(historyId);
+        HistoryDTO.HistoryResponse history = historyService.find(historyId);
         return ResponseEntity.ok(history);
     }
 
     // 내역 수정
     @Operation(summary = "내역 수정", description = "생성한 내역을 수정한다.")
     @PutMapping("/ledger/{ledgerId}/history/{historyId}")
-    public ResponseEntity<ReturnIdDTO> updateHistory(@PathVariable Long historyId, @RequestBody HistoryDTO.Request historyReqDto){
+    public ResponseEntity<ReturnIdDTO> updateHistory(@PathVariable Long historyId, @RequestBody HistoryDTO.HistoryRequest historyReqDto){
 
         ReturnIdDTO updatedId = historyService.update(historyId, historyReqDto);
         return ResponseEntity.ok(updatedId);
@@ -95,10 +95,10 @@ public class HistoryController {
     @Operation(summary = "내역 목록 조회(시작날짜, 끝날짜, 카테고리 조건 설정 가능)", description = "일간/월간/연간/사용자 설정 기간/카테고리 지정 조건에 따라 내역 목록을 조회한다." +
             "ex. \"/ledger/1/search?categories=5&categories=6&startDate=20240706&endDate=20240731\" 형식으로 요청")
     @GetMapping("/ledger/{ledgerId}/search")
-    public ResponseEntity<List<HistoryDTO.Response>> searchByConditions (@PathVariable Long ledgerId,
-                                                                         @RequestParam(required = false) List<Long> categories,
-                                                                         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,
-                                                                         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate) {
+    public ResponseEntity<List<HistoryDTO.HistoryResponse>> searchByConditions (@PathVariable Long ledgerId,
+                                                                                @RequestParam(required = false) List<Long> categories,
+                                                                                @RequestParam(required = false) @DateTimeFormat(pattern = "yyyyMMdd") LocalDate startDate,
+                                                                                @RequestParam(required = false) @DateTimeFormat(pattern = "yyyyMMdd") LocalDate endDate) {
 
         LocalDateTime startDateTime = (startDate != null) ? startDate.atStartOfDay() : null;
         LocalDateTime endDateTime = (endDate != null) ? endDate.atTime(LocalTime.MAX) : null;
