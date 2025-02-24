@@ -28,7 +28,7 @@ public class InviteController {
     private final InviteService inviteService;
     private final NotificationService notificationService;
 
-    @Operation(summary = "초대 생성 및 알림 전송", description = "가계부 관리자가 멤버를 초대하고, 성공적으로 실행될 경우 멤버에게 즉시 초대 알림이 전송된다.")
+    @Operation(summary = "초대 생성", description = "가계부 관리자가 멤버를 초대하고, 성공적으로 실행될 경우 멤버에게 즉시 초대 알림이 전송된다.")
     @PostMapping("/ledger/{ledgerId}/invite")
     public ResponseEntity<ReturnIdDTO> createInvite(
             @PathVariable Long ledgerId,
@@ -52,7 +52,7 @@ public class InviteController {
         return ResponseEntity.ok(inviteService.getInviteData(userDetails.getId()));
     }
 
-    @Operation(summary = "초대 응답 및 알림 전송", description = "멤버가 가계부 초대에 대해 응답하고, 성공적으로 실행될 경우 가계부 관리자에게 즉시 응답 알림이 전송된다.")
+    @Operation(summary = "초대 응답", description = "멤버가 가계부 초대에 대해 응답하고, 성공적으로 실행될 경우 가계부 관리자에게 즉시 응답 알림이 전송된다.")
     @PostMapping("/member/invite/{inviteId}")
     public ResponseEntity<ResponseDTO> responseInvite(
             @PathVariable Long inviteId,
