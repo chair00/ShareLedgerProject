@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.HistoryDTO;
 import com.example.demo.dto.ResponseDTO;
 import com.example.demo.dto.ReturnIdDTO;
+import com.example.demo.dto.signUp.CustomUserDetails;
 import com.example.demo.service.HistoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -31,9 +33,13 @@ public class HistoryController {
     @Operation(summary = "내역 생성", description = "가계부에 내역을 생성한다." +
             "date 형식은 yyyyMMddHHmm (문자열)")
     @PostMapping("/ledger/{ledgerId}/history")
-    public ResponseEntity<ReturnIdDTO> createHistory(@PathVariable Long ledgerId, @Valid @RequestBody HistoryDTO.Request historyReqDto){
+    public ResponseEntity<ReturnIdDTO> createHistory(@PathVariable Long ledgerId,
+                                                     @Valid @RequestBody HistoryDTO.Request historyReqDto,
+                                                     @AuthenticationPrincipal CustomUserDetails userDetails){
 
-        ReturnIdDTO createdId = historyService.save(ledgerId, historyReqDto);
+        Long memberId = userDetails.getId();
+
+        ReturnIdDTO createdId = historyService.save(ledgerId, historyReqDto, memberId);
         return ResponseEntity.ok(createdId);
     }
 

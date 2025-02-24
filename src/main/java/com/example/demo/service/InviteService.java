@@ -30,7 +30,8 @@ public class InviteService {
 
         Ledger ledger = ledgerRepository.findById(ledgerId)
                 .orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다."));
-        Member member = memberRepository.findByUsername(req.getMemberUsername());
+        Member member = memberRepository.findByUsername(req.getMemberUsername())
+                .orElseThrow(() -> new IllegalArgumentException("멤버 username이 존재하지 않습니다."));
 
         //         권한 확인
         if (!ledger.getOwner().getId().equals(ownerId)) {
@@ -70,17 +71,21 @@ public class InviteService {
         Invite invite = inviteRepository.findById(inviteId)
                 .orElseThrow(() -> new IllegalArgumentException("초대를 찾을 수 없습니다."));
 
+        if(invite.getStatus() == RequestStatus.ACCEPTED || invite.getStatus() == RequestStatus.DECLINED) {
+            throw new IllegalStateException("이미 처리된 요청입니다.");
+        }
+
         if(res.getAction() == ResponseAction.YES) {
 
             ledgerMemberService.validateLedgerCount(invite.getMember().getId());
 
             invite.setStatus(RequestStatus.ACCEPTED);
 
-            // LedgerMember에 저장 -> 초대받는 경우 권한은 read_write 로 설정
+            // LedgerMember에 저장 -> 기본 권한은 READ_ONLY 로 설정
             ledgerMemberService.saveMemberInLedger(
                     invite.getLedger(),
                     invite.getMember(),
-                    LedgerRole.READ_WRITE);
+                    LedgerRole.READ_ONLY);
 
         } else if (res.getAction() == ResponseAction.NO){
 

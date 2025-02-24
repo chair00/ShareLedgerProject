@@ -14,7 +14,7 @@ public class NotificationService {
     public void sendInviteNotification(String memberUsername, String ledgerName) {
         messagingTemplate.convertAndSendToUser(
                 memberUsername,
-                "/topic/invite",
+                "/topic/notification",
                 new Notification("초대 알림", ledgerName + " 가계부에 초대되었습니다.")
         );
     }
@@ -26,7 +26,7 @@ public class NotificationService {
 
         messagingTemplate.convertAndSendToUser(
                 ledgerOwnerUsername,
-                "topic/invite-response",
+                "/topic/notification",
                 new Notification("초대 응답 알림", message)
         );
     }
@@ -34,7 +34,7 @@ public class NotificationService {
     public void sendJoinNotification(String ledgerOwnerUsername, String memberName) {
         messagingTemplate.convertAndSendToUser(
                 ledgerOwnerUsername,
-                "/topic/join",
+                "/topic/notification",
                 new Notification("가입 요청 알림", memberName + " 님이 가계부에 가입 요청을 보냈습니다.")
         );
     }
@@ -46,7 +46,7 @@ public class NotificationService {
 
         messagingTemplate.convertAndSendToUser(
                 memberUsername,
-                "topic/join-response",
+                "/topic/notification",
                 new Notification("가입 요청에 대한 응답 알림", message)
         );
     }

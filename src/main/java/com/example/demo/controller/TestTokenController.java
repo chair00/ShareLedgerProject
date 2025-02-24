@@ -27,7 +27,8 @@ public class TestTokenController {
     public TokenDTO showGeneratedToken() {
 
         // 관리자 계정 조회
-        Member test = memberRepository.findByUsername("TEST");
+        Member test = memberRepository.findByUsername("TEST")
+                .orElseThrow(() -> new IllegalArgumentException("멤버 username이 존재하지 않습니다."));
 
         // JWT 생성
         String token = "Bearer " + jwtUtil.createJwt(

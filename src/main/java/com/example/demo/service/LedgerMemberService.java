@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.LedgerDTO;
 import com.example.demo.repository.LedgerMemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.example.demo.entity.*;
@@ -17,8 +18,12 @@ public class LedgerMemberService {
 
     private final LedgerMemberRepository ledgerMemberRepository;
 
-    public List<LedgerDTO.ResponseDTO> findLedgersByMemberId(Long memberId) {
-        return ledgerMemberRepository.findByMemberId(memberId)
+    public List<LedgerMember> findByMemberId(Long memberId) {
+        return ledgerMemberRepository.findByMemberId(memberId);
+    }
+
+    public List<LedgerDTO.ResponseDTO> findLedgerDTOByMemberId(Long memberId) {
+        return findByMemberId(memberId)
                 .stream()
                 .map(ledgerMember -> {
                     Ledger ledger = ledgerMember.getLedger();
@@ -53,5 +58,32 @@ public class LedgerMemberService {
                 .build();
 
         return ledgerMemberRepository.save(ledgerMember);
+    }
+
+    @Transactional
+    public void deleteMemberFromLedger(LedgerMember ledgerMember) {
+
+        ledgerMemberRepository.delete(ledgerMember);
+    }
+
+    public List<LedgerMember> findByLedgerId(Long ledgerId) {
+        return ledgerMemberRepository.findByLedgerId(ledgerId);
+    }
+
+    @Transactional
+    public void changeRole(Ledger ledger, Member member, LedgerRole role) {
+        LedgerMember ledgerMember = ledgerMemberRepository.findByLedgerAndMember(ledger, member)
+                .orElseThrow(() -> new IllegalArgumentException("해당 가계부에 해당 멤버가 존재하지 않습니다."));
+
+        ledgerMember.setRole(role);
+        ledgerMemberRepository.save(ledgerMember);
+    }
+
+    public LedgerMember findByLedgerIdAndMemberId(Long ledgerId, Long memberId) {
+
+        LedgerMember ledgerMember = ledgerMemberRepository.findByLedgerIdAndMemberId(ledgerId, memberId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 가계부에 멤버가 존재하지 않습니다."));
+
+        return ledgerMember;
     }
 }

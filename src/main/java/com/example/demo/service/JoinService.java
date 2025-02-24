@@ -84,6 +84,10 @@ public class JoinService {
         JoinRequest joinRequest = joinRepository.findById(joinId)
                 .orElseThrow(() -> new IllegalArgumentException("요청을 찾을 수 없습니다."));
 
+        if(joinRequest.getStatus() == RequestStatus.ACCEPTED || joinRequest.getStatus() == RequestStatus.DECLINED) {
+            throw new IllegalStateException("이미 처리된 요청입니다.");
+        }
+
         if(res.getAction() == ResponseAction.YES) {
 
             // 가계부 최대 생성 개수 확인

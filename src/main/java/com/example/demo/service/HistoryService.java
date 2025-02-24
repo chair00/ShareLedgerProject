@@ -2,12 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.dto.HistoryDTO;
 import com.example.demo.dto.ReturnIdDTO;
-import com.example.demo.entity.Category;
-import com.example.demo.entity.History;
-import com.example.demo.entity.Ledger;
-import com.example.demo.repository.CategoryRepository;
-import com.example.demo.repository.HistoryRepository;
-import com.example.demo.repository.LedgerRepository;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
 import com.example.demo.specification.HistorySpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -27,12 +23,22 @@ public class HistoryService {
     private final LedgerRepository ledgerRepository;
     private final CategoryRepository categoryRepository;
 
+    private final LedgerMemberService ledgerMemberService;
+
+
     // 내역 생성
-    public ReturnIdDTO save(Long ledgerId, HistoryDTO.Request historyReqDto) {
+    public ReturnIdDTO save(Long ledgerId, HistoryDTO.Request historyReqDto, Long memberId) {
+
+        Ledger ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다"));
+
+        LedgerMember ledgerMember = ledgerMemberService.findByLedgerIdAndMemberId(ledgerId, memberId);
+
+        if (!ledgerMember.canWrite()) {
+            throw new IllegalStateException("해당 멤버는 내역을 생성할 권한이 없습니다.");
+        }
 
         History history = historyReqDto.toEntity();
 
-        Ledger ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다"));
         history.setLedger(ledger);
 
         Category category = categoryRepository.findById(historyReqDto.getCategoryId()).orElseThrow(() -> new IllegalArgumentException("카테고리 id가 존재하지 않습니다"));

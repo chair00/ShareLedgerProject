@@ -1,0 +1,18 @@
+<configuration>
+    <!-- WebSocket 전용 로그 파일 설정 -->
+    <appender name="WEBSOCKET_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/websocket.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/websocket-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory> <!-- 30일 동안 보관 -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- WebSocket 로거 -->
+    <logger name="com.example.websocket" level="INFO" additivity="false">
+        <appender-ref ref="WEBSOCKET_LOG" />
+    </logger>
+</configuration>

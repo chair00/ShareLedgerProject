@@ -40,4 +40,14 @@ public class LedgerDTO {
         }
     }
 
+    @Getter
+    @Setter
+    @Schema(description = "가계부 관리자 권한 위임 DTO")
+    public static class DelegateOwnerDTO {
+
+        @Schema(description = "새로운 관리자 username")
+        private String username;
+
+    }
+
 }

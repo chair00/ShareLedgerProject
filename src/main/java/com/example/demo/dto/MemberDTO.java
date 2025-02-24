@@ -24,9 +24,6 @@ public class MemberDTO {
         @Schema(description = "비밀번호")
         @NotBlank(message = "비밀번호를 입력하세요.")
         private String password;
-        @Schema(description = "비밀번호 확인")
-        @NotBlank(message = "비밀번호를 재입력하세요.")
-        public String passwordCheck;
 
         @Schema(description = "사용자 이름")
         @NotBlank(message = "이름을 입력하세요.")
@@ -88,5 +85,25 @@ public class MemberDTO {
 //            this.email = email;
 //            this.name = name;
 //        }
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(description = "비밀번호 재확인")
+    public static class PasswordVerifyRequest {
+        @Schema(description = "password 입력")
+        private String password;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(description = "프로필 이미지 요청/응답")
+    public static class ProfileImage {
+        @Schema(description = "이미지 url")
+        private String url;
     }
 }

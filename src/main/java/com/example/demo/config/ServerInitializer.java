@@ -35,7 +35,8 @@ public class ServerInitializer {
                 memberRepository.save(test);
 
             } else {
-                test = memberRepository.findByUsername("TEST");
+                test = memberRepository.findByUsername("TEST")
+                        .orElseThrow(() -> new IllegalArgumentException("멤버 username이 존재하지 않습니다."));
             }
         };
     }

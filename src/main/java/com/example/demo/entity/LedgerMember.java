@@ -29,5 +29,18 @@ public class LedgerMember {
     private Member member;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private LedgerRole role;
+
+    public boolean canRead() {
+        return true;
+    }
+
+    public boolean canWrite() {
+        return this.role == LedgerRole.READ_WRITE || this.role == LedgerRole.OWNER;
+    }
+
+    public boolean isOwner() {
+        return this.role == LedgerRole.OWNER;
+    }
 }

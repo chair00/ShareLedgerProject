@@ -1,12 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.LedgerDTO;
+import com.example.demo.dto.ResponseDTO;
 import com.example.demo.dto.ReturnIdDTO;
 import com.example.demo.dto.signUp.CustomUserDetails;
-import com.example.demo.response.ApiResult;
 import com.example.demo.service.LedgerService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -64,4 +63,25 @@ public class LedgerController {
         List<LedgerDTO.ResponseDTO> ledgers = ledgerService.findLedger(ledgerName);
         return ResponseEntity.ok(ledgers);
     }
+
+    // 가계부 관리자 권한 위임
+    @Operation(summary = "가계부 관리자 권한 위임", description = "가계부 관리자가 다른 멤버에게 관리자 권한을 위임한다.")
+    @PostMapping("/{ledgerId}/delegate-owner")
+    public ResponseEntity<ResponseDTO> delegateOwner(
+            @PathVariable Long ledgerId,
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestBody LedgerDTO.DelegateOwnerDTO newOwner){
+
+        System.out.println("In Controller: deletegate Owner 실행");
+
+        String newOwnerUsername = newOwner.getUsername();
+
+        System.out.println("In Controller: 현재 로그인한 가계부 owner username - " + newOwner.getUsername());
+
+        ledgerService.changeLedgerOwner(ledgerId, userDetails.getId(), newOwner.getUsername());
+
+        System.out.println("In Controller: Service 작업 완료");
+        return ResponseEntity.ok(new ResponseDTO(newOwnerUsername + " 에게 관리자 권한을 위임했습니다."));
+    }
+
 }

@@ -46,7 +46,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
-        Member existData = userRepository.findByUsername(username);
+        Member existData = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("멤버 username이 존재하지 않습니다."));
 
         if (existData == null) {  // 가입하지 않은 회원일 경우 -> 가입
 

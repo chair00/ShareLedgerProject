@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.CategoryDTO;
 import com.example.demo.dto.LedgerDTO;
 import com.example.demo.dto.ReturnIdDTO;
 import com.example.demo.entity.*;
@@ -41,14 +40,14 @@ public class LedgerService {
         }
 
         Ledger ledger = new Ledger(ledgerDto.getLedgerName());
-        ledger.setOwner(member);
+         ledger.setOwner(member);
         ledgerRepository.save(ledger);
 
         // LedgerMember에 저장 -> owner의 권한은 read_write 로 설정
         LedgerMember ledgerMember = LedgerMember.builder()
                 .ledger(ledger)
                 .member(member)
-                .role(LedgerRole.READ_WRITE)
+                .role(LedgerRole.OWNER)
                 .build();
 
         ledgerMemberRepository.save(ledgerMember);
@@ -81,10 +80,16 @@ public class LedgerService {
     // 가계부 정보 조회
     public LedgerDTO.ResponseDTO getLedger(Long ledgerId) {
 
-        Ledger ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다."));
+        Ledger ledger = findById(ledgerId);
 
         return new LedgerDTO.ResponseDTO(ledgerId, ledger.getName(), ledger.getOwner().getUsername());
 
+    }
+
+    public Ledger findById(Long ledgerId) {
+        Ledger ledger = ledgerRepository.findById(ledgerId)
+                .orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다."));
+        return ledger;
     }
 
     // 가계부 정보 수정
@@ -105,6 +110,12 @@ public class LedgerService {
             throw new SecurityException("해당 가계부를 삭제할 권한이 없습니다.");
         }
 
+        // ledgerMember 전체 삭제
+        List<LedgerMember> ledgerMembers = ledgerMemberService.findByLedgerId(ledgerId);
+        for (LedgerMember ledgerMember : ledgerMembers) {
+            ledgerMemberService.deleteMemberFromLedger(ledgerMember);
+        }
+
         ledgerRepository.delete(ledger);
     }
 
@@ -119,5 +130,52 @@ public class LedgerService {
     }
 
     // 가계부 권한 위임
+    @Transactional
+    public void changeLedgerOwner(Long ledgerId, Long ownerId, String newOwnerUsername) {
+
+        System.out.println("In Service : change Ledger Owner 진입");
+
+        // 가계부 존재 확인
+        Ledger ledger = ledgerRepository.findById(ledgerId).orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다."));
+
+        System.out.println("In Service : 가계부 존재 확인 id-" + ledger.getId());
+
+        // 권한 확인 (가계부 관리자의 경우에만 권한 위임 가능)
+        if (!ledger.getOwner().getId().equals(ownerId)) {
+            throw new SecurityException("해당 가계부를 삭제할 권한이 없습니다.");
+        }
+
+        // oldOwner 객체
+        Member owner = memberRepository.findById(ownerId)
+                .orElseThrow(() -> new IllegalArgumentException(ownerId + "- 멤버 id가 존재하지 않습니다."));
+
+        System.out.println("In Service : 현재 owner id-" + owner.getId());
+
+        // newOwner 객체
+        Member newOwner = memberRepository.findByUsername(newOwnerUsername)
+                .orElseThrow(() -> new IllegalArgumentException(newOwnerUsername + "- 멤버 username이 존재하지 않습니다."));
+
+        System.out.println("In Service : 새로운 owner id-" + newOwner.getId());
+
+        // 가계부에 가입된 멤버인지 확인
+        if(! ledgerMemberRepository.existsByLedgerAndMember(ledger, newOwner)) {
+            throw new IllegalArgumentException(newOwner.getUsername() + "은/는 가계부에 가입되지 않은 멤버입니다.");
+        }
+
+        // ledger - owner 필드 변경
+        ledger.setOwner(newOwner);
+        ledgerRepository.save(ledger);
+
+        System.out.println("In Service : 새로운 owner 위임 완료 : new owner id-" + ledger.getOwner().getId());
+
+        // ledgerMember - 권한 변경 (owner은 read_write, new는 owner)
+        ledgerMemberService.changeRole(ledger, owner, LedgerRole.READ_WRITE);
+        System.out.println("In Service : 이전 owner 권한 변경 완료");
+        ledgerMemberService.changeRole(ledger, newOwner, LedgerRole.OWNER);
+        System.out.println("In Service : 새로운 owner 권한 변경 완료");
+
+
+
+    }
 
 }
