@@ -5,7 +5,6 @@ import com.example.demo.dto.ResponseAction;
 import com.example.demo.dto.ReturnIdDTO;
 import com.example.demo.entity.*;
 import com.example.demo.repository.InviteRepository;
-import com.example.demo.repository.LedgerMemberRepository;
 import com.example.demo.repository.LedgerRepository;
 import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,7 @@ public class InviteService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public ReturnIdDTO createInvite(Long ledgerId, InviteDTO.Request req, Long ownerId) {
+    public ReturnIdDTO createInvite(Long ledgerId, InviteDTO.InviteRequest req, Long ownerId) {
 
         Ledger ledger = ledgerRepository.findById(ledgerId)
                 .orElseThrow(() -> new IllegalArgumentException("가계부 id가 존재하지 않습니다."));
@@ -54,20 +53,20 @@ public class InviteService {
         return new ReturnIdDTO(saved);
     }
 
-    public List<InviteDTO.RequestData> getInviteData(Long memberId) {
+    public List<InviteDTO.InviteRequestData> getInviteData(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버 id가 없습니다."));
         List<Invite> invites = inviteRepository.findByMemberAndStatus(member, RequestStatus.PENDING);
 
         return invites.stream()
-                .map(invite -> new InviteDTO.RequestData(
+                .map(invite -> new InviteDTO.InviteRequestData(
                         invite.getId(),
                         invite.getLedger().getName()
                 )).collect(Collectors.toList());
     }
 
     @Transactional
-    public void responseInvite(Long inviteId, InviteDTO.Response res) {
+    public void responseInvite(Long inviteId, InviteDTO.InviteResponse res) {
         Invite invite = inviteRepository.findById(inviteId)
                 .orElseThrow(() -> new IllegalArgumentException("초대를 찾을 수 없습니다."));
 

@@ -32,7 +32,7 @@ public class InviteController {
     @PostMapping("/ledger/{ledgerId}/invite")
     public ResponseEntity<ReturnIdDTO> createInvite(
             @PathVariable Long ledgerId,
-            @RequestBody InviteDTO.Request req,
+            @RequestBody InviteDTO.InviteRequest req,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         // 초대 생성
@@ -47,7 +47,7 @@ public class InviteController {
 
     @Operation(summary = "초대 목록 조회", description = "멤버가 가계부 초대 목록을 조회한다.")
     @GetMapping("/member/invite")
-    public ResponseEntity<List<InviteDTO.RequestData>> getInvite(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<List<InviteDTO.InviteRequestData>> getInvite(@AuthenticationPrincipal CustomUserDetails userDetails) {
 
         return ResponseEntity.ok(inviteService.getInviteData(userDetails.getId()));
     }
@@ -56,7 +56,7 @@ public class InviteController {
     @PostMapping("/member/invite/{inviteId}")
     public ResponseEntity<ResponseDTO> responseInvite(
             @PathVariable Long inviteId,
-            @RequestBody InviteDTO.Response res,
+            @RequestBody InviteDTO.InviteResponse res,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         // 초대 응답
