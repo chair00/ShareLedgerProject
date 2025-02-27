@@ -7,6 +7,7 @@ import com.example.demo.jwt.OAuth2JWTFilter;
 import com.example.demo.oauth2.CustomSuccessHandler;
 import com.example.demo.service.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +27,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Collections;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -103,14 +105,18 @@ public class SecurityConfig {
 //                        .anyRequest().authenticated()
 //                );
 
+
+        log.info("In SecurityConfig: h2 주소 설정 전");
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .requestMatchers("/ws/**").permitAll()
-                        .requestMatchers("/", "/oauth2/**", "/login/**", "/signup", "/h2-console/**", "/token", "/swagger-ui/**", "/v3/api-docs/**", "/test-log/**").permitAll()
+                        .requestMatchers("/", "/oauth2/**", "/login/**", "/signup", "/h2-console/**", "/h2/**", "/token", "/swagger-ui/**", "/v3/api-docs/**", "/test-log/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
+
+        log.info("In SecurityConfig: h2 주소 설정 후");
 
         //oauth2
         http

@@ -46,10 +46,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
+
+        System.out.println("In CustomOAuth2UserService: existData 선언 전");
         Member existData = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("멤버 username이 존재하지 않습니다."));
+                .orElse(null);
+
+        System.out.println("In CustomOAuth2UserService: existData 선언 후");
 
         if (existData == null) {  // 가입하지 않은 회원일 경우 -> 가입
+
+            System.out.println("In CustomOAuth2UserService: 가입 시작");
 
             // 가입
             Member userEntity = new Member();
@@ -60,6 +66,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userEntity.setRole("ROLE_USER");
 
             userRepository.save(userEntity);
+
+            System.out.println("In CustomOAuth2UserService: 가입 완료");
         }
         else { // 가입한 회원일 경우 -> 정보 수정
 
@@ -71,6 +79,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         // 로그인 진행. Provider한테 넘김
+
+        System.out.println("In CustomOAuth2UserService: 로그인 시작");
         MemberDTO.OAuth2Login userDTO = new MemberDTO.OAuth2Login();
         userDTO.setUsername(username);
         userDTO.setName(oAuth2Response.getName());
