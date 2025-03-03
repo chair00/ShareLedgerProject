@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -41,8 +42,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String token = jwtUtil.createJwt(id, username, role, 1000 * 60 * 60 * 24L);
 
-        response.addCookie(createCookie("Authorization", token));
-        response.sendRedirect("http://localhost:3000/login/callback");
+        String url = makeRedirectUrl(token);
+//        response.addCookie(createCookie("Authorization", token));
+//        response.sendRedirect("http://localhost:3000/login/callback");
+
+        getRedirectStrategy().sendRedirect(request, response, url);
     }
 
     private Cookie createCookie(String key, String value) {
@@ -54,5 +58,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         cookie.setHttpOnly(true);
 
         return cookie;
+    }
+
+    private String makeRedirectUrl(String token) {
+        return UriComponentsBuilder.fromUriString("http://localhost:3000/login/callback/"+token)
+                .build().toUriString();
     }
 }
