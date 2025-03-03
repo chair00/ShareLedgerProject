@@ -61,7 +61,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     }
 
     private String makeRedirectUrl(String token) {
-        return UriComponentsBuilder.fromUriString("http://localhost:3000/login/callback/"+token)
+        return UriComponentsBuilder.fromUriString("http://localhost:3000/login/callback")
+                .queryParam("token", token) // token을 쿼리 파라미터로 추가
                 .build().toUriString();
     }
 }
